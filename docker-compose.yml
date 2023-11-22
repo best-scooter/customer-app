@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  customer-app:
+    image: davee3/customer-app:1.0
+    ports:
+      - "8081:8081"
+    stdin_open: true
+    tty: true
