@@ -17,4 +17,9 @@ function generateMarkers(n: number, lat:number, lng:number, rangeFloor:number, r
     return markers
 }
 
+function placeMarkers(mapItems: object): JSX.Element[] {
+    const markers: JSX.Element[] = [];
+    //
+}
+
 export default generateMarkers;
