@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet,  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 //indentation broke again
 
 const Rent = () => {
   const [userInput, setuserInput] = useState('')
-  const [QRCode, setQRCode] = useState('')
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
 
   const handleUserInput = () => {
     console.log('userInput:', userInput);
     //if ok send popup or redirct to confirm hire of bike
   }
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
 
   const handleQRCode = () => {
     // open camera on device ask for permission etc?
@@ -21,6 +28,24 @@ const Rent = () => {
 
   const confirmation = () => {
 
+  }
+
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      console.log('we in')
+      setHasPermission(status === 'granted');
+    };
+
+    getBarCodeScannerPermissions();
+  }, []);
+  console.log('test')
+
+  if (hasPermission === null) {
+    return <View style={styles.container}><Text>Requesting for camera permission</Text></View>;
+  }
+  if (hasPermission === false) {
+    return <View style={styles.container}><Text>No access to camera</Text></View>;
   }
 
   return (
@@ -48,6 +73,11 @@ const Rent = () => {
         onPress={handleUserInput}
       >
         </PaperButton>
+        <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
     </View>
   );
 };
