@@ -9,13 +9,19 @@ import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 
 
+const CLIENT_ID2 = "ab37ccfd44b552a7f961" //Adam web
+const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
 
-const REDIRECT_URI = "exp://192.168.0.10:8081"
-const AUTH_URL = "http://192.168.0.10:1337/customer/auth?redirectUrl=http://192.168.0.10:3000/authcallback"
-const CLOWN_URL = "https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=http%3A%2F%192.168.0.10%3A3000%2Fauthcallback&scope=user%3Aemail&state=46x54el7qdq"
+//const REDIRECT_URI = "exp://192.168.0.10:8081"
+const REDIRECT_URI = "exp://192.168.0.10:8081";
+const AUTH_URL = "http://192.168.0.10:1337/customer/auth?redirectUrl=http://192.168.0.10:8081/authcallback"
+const CLOWN_URL = "https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%192.168.0.10%8081%2Fauthcallback&scope=user%3Aemail&state=46x54el7qdq"
+const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=user`;
+
 
 const Login = () => {
   const navigation = useNavigation();
+  const [userInfo, setUserInfo] = useState(null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -34,30 +40,23 @@ const Login = () => {
 
   const handleOAUTH = async () => {
     try {
-      const redirectUrl = Linking.createURL('/redirect');
-      const result = await WebBrowser.openAuthSessionAsync(CLOWN_URL, redirectUrl);
+      const result = await WebBrowser.openAuthSessionAsync(GITHUB_AUTH_URL, REDIRECT_URI);
 
-      if (result.type === 'success') {
-        const responseUrl = result.url;
-        handleOAuthResponse(responseUrl);
+      if (result.type === 'success' && result.url) {
+        handleOAuthResponse(result.url);
       }
     } catch (error) {
-      console.error("OAuth error:", error);
+      console.error('OAuth error:', error);
     }
   };
-
-  const handleOAuthResponse = async (responseUrl: string) => {
+  
+  const handleOAuthResponse = async (responseUrl) => {
     try {
-      const redirect = await Linking.getInitialURL();
-      const url = redirect ? redirect : responseUrl;
-
-      if (url.includes('your-callback-url')) {
-        // Extract necessary data
-        // redirect to app
-        Linking.openURL(url);
+      if (responseUrl.includes(REDIRECT_URI)) {
+        const parsedUrl = Linking.parse(responseUrl);
       }
     } catch (error) {
-      console.error("OAuth response handling error:", error);
+      console.error('OAuth response handling error:', error);
     }
   };
 

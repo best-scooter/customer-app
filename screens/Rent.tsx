@@ -19,16 +19,8 @@ const Rent = () => {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    //here we actually set the bike to hired later
   };
-
-  const handleQRCode = () => {
-    // open camera on device ask for permission etc?
-    //if ok send popup or redirct to confirm hire of bike
-  }
-
-  const confirmation = () => {
-
-  }
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
