@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, Button as PaperButton, IconButton } from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 //for oauth internet access
 import * as WebBrowser from "expo-web-browser";
@@ -13,14 +13,16 @@ const CLIENT_ID2 = "ab37ccfd44b552a7f961" //Adam web
 const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
 
 //const REDIRECT_URI = "exp://192.168.0.10:8081"
-const REDIRECT_URI = "exp://192.168.0.10:8081";
-const AUTH_URL = "http://192.168.0.10:1337/customer/auth?redirectUrl=http://192.168.0.10:8081/authcallback"
-const CLOWN_URL = "https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%192.168.0.10%8081%2Fauthcallback&scope=user%3Aemail&state=46x54el7qdq"
-const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=user`;
+//const REDIRECT_URI = "exp://192.168.0.10:8081";
+//const AUTH_URL = "http://192.168.0.10:1337/customer/auth?redirectUrl=http://192.168.0.10:8081/authcallback"
+//const CLOWN_URL = "https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%192.168.0.10%8081%2Fauthcallback&scope=user%3Aemail&state=46x54el7qdq"
+//const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=user`;
 
 
 const Login = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+
   const [userInfo, setUserInfo] = useState(null);
 
   const [username, setUsername] = useState('');
@@ -34,29 +36,78 @@ const Login = () => {
     // Fetch stuff
   };
 
+  const extractCodeFromUrl = (url) => {
+    const match = url.match(/code=([^&]+)/);
+    console.log(match)
+    return match[1];
+  };
+
   const handleRedirect = () => {
     navigation.navigate('Register');
   }
 
-  const handleOAUTH = async () => {
+  const handleOAUTH = async (redirectUrl: string, url: string, state: string) => {
     try {
-      const result = await WebBrowser.openAuthSessionAsync(GITHUB_AUTH_URL, REDIRECT_URI);
-
-      if (result.type === 'success' && result.url) {
-        handleOAuthResponse(result.url);
-      }
+      console.log(redirectUrl, url, state);
+      const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
+  
+      let code = extractCodeFromUrl(result.url)
+  
+      console.log('Code:', code);
+  
+      // Rest of your code
+  
     } catch (error) {
       console.error('OAuth error:', error);
     }
   };
-  
-  const handleOAuthResponse = async (responseUrl) => {
+
+  const getOAUTH = async () => {
     try {
-      if (responseUrl.includes(REDIRECT_URI)) {
-        const parsedUrl = Linking.parse(responseUrl);
-      }
+      const response = await fetch("http://192.168.0.10:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true");
+      const result = await response.json();
+      const state = result.data.state
+
+      console.log(result)
+      handleOAUTH(result.data.redirectUrl, result.data.url, state)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const postOAUTH = async (code: string, state: string) => {
+    try {
+      const response = await fetch("http://192.168.0.10:1337/customer/auth?mobile=true", {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({"code": code, "state": state})
+      });
+      const result = await response.json();
+      const state = result.data.state
+
+      console.log(result)
+      handleOAUTH(result.data.redirectUrl, result.data.url, state)
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const handleOAuthResponse = async (responseUrl: string) => {
+    try {
+      const parsedUrl = Linking.parse(responseUrl);
+      console.log('parsed: ' , parsedUrl)
+
     } catch (error) {
       console.error('OAuth response handling error:', error);
+    }
+  };
+
+  const getTest = async () => {
+    try {
+      Linking.openURL('https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%2F192.168.0.10%3A8081&scope=user%3Aemail&state=hgz8pzixqnj');
+    } catch (error) {
     }
   };
 
@@ -102,9 +153,18 @@ const Login = () => {
         style={styles.buttonGoogle}
         labelStyle={{ color: 'white', fontWeight: 'bold' }}
         icon={'google'}
-        onPress={handleOAUTH}
+        onPress={getOAUTH}
       >
         Continue with Google
+      </PaperButton>
+      <PaperButton
+        mode='contained'
+        style={styles.buttonGoogle}
+        labelStyle={{ color: 'black', fontWeight: 'bold' }}
+        icon={'apple'}
+        onPress={getTest}
+      >
+        Continue with Testing
       </PaperButton>
     </View>
   );
