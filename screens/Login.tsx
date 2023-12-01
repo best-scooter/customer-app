@@ -52,10 +52,9 @@ const Login = () => {
       const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
   
       let code = extractCodeFromUrl(result.url)
-  
       console.log('Code:', code);
   
-      // Rest of your code
+      postOAUTH(code, state)
   
     } catch (error) {
       console.error('OAuth error:', error);
@@ -77,6 +76,7 @@ const Login = () => {
 
   const postOAUTH = async (code: string, state: string) => {
     try {
+      //normal route doesnt work it enforces redirect to predetermined url so this is a work around
       const response = await fetch("http://192.168.0.10:1337/customer/auth?mobile=true", {
         headers: {
           'Content-Type': 'application/json'
@@ -85,10 +85,8 @@ const Login = () => {
         body: JSON.stringify({"code": code, "state": state})
       });
       const result = await response.json();
-      const state = result.data.state
-
       console.log(result)
-      handleOAUTH(result.data.redirectUrl, result.data.url, state)
+
     } catch (error) {
       console.error(error);
     }
