@@ -12,6 +12,7 @@ import * as Linking from "expo-linking";
 
 import { getOAUTH } from '../functions/FetchOAuth';
 import { redirectOAuth } from '../functions/FetchOAuth';
+import { postOAUTH } from '../functions/FetchOAuth';
 
 const CLIENT_ID2 = "ab37ccfd44b552a7f961" //Adam web
 const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
@@ -45,7 +46,7 @@ const Login = () => {
     navigation.navigate('Register');
   }
 
-  const postOAUTH = async (code: string, state: string) => {
+  const postOAUTH2 = async (code: string, state: string) => {
     try {
       //normal route doesnt work it enforces redirect to predetermined url so this is a work around
       const response = await fetch(`${ADDRESS}:1337/customer/auth?mobile=true`, {
@@ -67,7 +68,8 @@ const Login = () => {
     try {
       const [redirectUrl, url, state]: string[] = await getOAUTH();
       const [ code ] = await redirectOAuth(redirectUrl, url, state);
-      postOAUTH(code, state)
+      const token = await postOAUTH(code, state)
+      console.log('All clear, your token is: ', token)
     } catch (error) {
       console.error('Error in allInOne:', error);
     }

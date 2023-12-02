@@ -5,7 +5,7 @@ export function RandomFloat(floor: number, ceiling: number):number {
 
 export function extractCodeFromUrl(url: string): string {
     const match = url.match(/code=([^&]+)/);
-    console.log(match);
+    //console.log(match);
     if (match) {
       return match[1];
     } else {

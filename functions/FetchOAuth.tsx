@@ -2,17 +2,6 @@ const ADDRESS = process.env.DEV_ADDRESS;
 import * as WebBrowser from "expo-web-browser";
 import { extractCodeFromUrl } from "./Helpers";
 
-const postOAUTH = async (code:string, state:string) => {
-    const response = await fetch("http://192.168.0.10:1337/customer/auth?mobile=true", {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({"code": code, "state": state})
-      });
-      const result = await response.json();
-};
-
 export async function getOAUTH(): Promise<string[]> {
     try {
         const response = await fetch(`${ADDRESS}:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true`);
@@ -36,14 +25,11 @@ export async function getOAUTH(): Promise<string[]> {
 
 export async function redirectOAuth(redirectUrl: string, url: string, state: string): Promise<string[]> {
     try {
-      console.log(redirectUrl, url, state);
+      //console.log(redirectUrl, url, state);
       const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
       const code = extractCodeFromUrl(result.url);
   
-      console.log('Code:', code);
-  
-      // If needed, add postOAUTH logic here
-      // postOAUTH(code, state);
+      //console.log('Code:', code);
   
       return [code, state];
     } catch (error) {
@@ -54,7 +40,6 @@ export async function redirectOAuth(redirectUrl: string, url: string, state: str
 
 export async function postOAUTH(code: string, state: string): Promise<string> {
     try {
-      //normal route doesnt work it enforces redirect to predetermined url so this is a work around
       const response = await fetch(`${ADDRESS}:1337/customer/auth?mobile=true`, {
         headers: {
           'Content-Type': 'application/json'
@@ -63,9 +48,10 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
         body: JSON.stringify({"code": code, "state": state})
       });
       const result = await response.json();
-      console.log(result)
+      //console.log('res: ', result)
+      //console.log(result.data.oAuthToken)
 
-      return result.oAuthToken
+      return result.data.oAuthToken
 
     } catch (error) {
         console.error('OAuth error:', error);
