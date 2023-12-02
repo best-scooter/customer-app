@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity
+} from 'react-native';
 
 const Home = () => {
   // Placeholder just getting landing page setup
@@ -7,7 +13,10 @@ const Home = () => {
   const description = 'This is a placeholder with amazing text dud.';
 
   return (
-    <ImageBackground source={require('../assets/HomePageLander.jpg')} style={styles.background}>
+    <ImageBackground
+      source={require('../assets/HomePageLander.jpg')}
+      style={styles.background}
+    >
       <View style={styles.container}>
         <View style={styles.overlay}>
           <View style={styles.header}>
@@ -31,12 +40,12 @@ const Home = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: 'cover',
+    resizeMode: 'cover'
   },
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   overlay: {
     backgroundColor: 'rgba(0,0,0,0.6)',
@@ -44,41 +53,41 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 20
   },
   header: {
-    marginBottom: 20,
+    marginBottom: 20
   },
   headerText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'white'
   },
   news: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 20
   },
   headline: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: 'white',
+    color: 'white'
   },
   description: {
     textAlign: 'center',
     marginBottom: 20,
-    color: 'white',
+    color: 'white'
   },
   button: {
     backgroundColor: 'tomato',
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 5
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
 export default Home;

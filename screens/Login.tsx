@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { TextInput, Button as PaperButton, IconButton } from 'react-native-paper';
+import {
+  TextInput,
+  Button as PaperButton,
+  IconButton
+} from 'react-native-paper';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -24,14 +28,14 @@ const Login = () => {
 
   const handleRedirect = () => {
     navigation.navigate('Register');
-  }
+  };
 
   const allInOne = async () => {
     try {
       const [redirectUrl, url, state]: string[] = await getOAUTH();
-      const [ code ] = await redirectOAuth(redirectUrl, url, state);
-      const token = await postOAUTH(code, state)
-      console.log('All clear, your token is: ', token)
+      const [code] = await redirectOAuth(redirectUrl, url, state);
+      const token = await postOAUTH(code, state);
+      console.log('All clear, your token is: ', token);
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
@@ -43,21 +47,21 @@ const Login = () => {
       <TextInput
         value={username}
         onChangeText={setUsername}
-        label='Email'
+        label="Email"
         style={styles.input}
-        left={<TextInput.Icon icon="email"/>}
+        left={<TextInput.Icon icon="email" />}
       />
       <TextInput
         value={password}
         onChangeText={setPassword}
-        label='Password'
+        label="Password"
         secureTextEntry={true}
         style={styles.input}
         left={<TextInput.Icon icon="lock" />}
       />
 
       <PaperButton
-        mode='contained'
+        mode="contained"
         onPress={handleLogin}
         style={styles.button}
         labelStyle={styles.buttonText}
@@ -65,17 +69,16 @@ const Login = () => {
         Login
       </PaperButton>
       <PaperButton
-        mode='contained'
+        mode="contained"
         style={styles.buttonSecondary}
         labelStyle={styles.buttonTextSecondary}
         onPress={handleRedirect}
-
       >
         Register
       </PaperButton>
       <Text style={{ marginVertical: 10 }}>Or</Text>
       <PaperButton
-        mode='contained'
+        mode="contained"
         style={styles.buttonGoogle}
         labelStyle={{ color: 'white', fontWeight: 'bold' }}
         icon={'google'}
@@ -91,23 +94,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   input: {
     width: '80%',
     height: 50,
-    marginBottom: 20,
+    marginBottom: 20
   },
   headerContainerText: {
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 20,
-    textAlign: 'left',
+    textAlign: 'left'
   },
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 18
   },
   button: {
     width: '80%',
@@ -115,19 +118,19 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: '#007bff',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: 20
   },
   buttonSecondary: {
     width: '80%',
     height: 50,
     borderRadius: 25,
     backgroundColor: '#28a745',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   buttonTextSecondary: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 18
   },
   buttonGoogle: {
     width: '80%',
@@ -136,8 +139,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'tomato',
     justifyContent: 'center',
     flexDirection: 'row',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export default Login;
