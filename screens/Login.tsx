@@ -3,9 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import {
   TextInput,
   Button as PaperButton,
-  IconButton
 } from 'react-native-paper';
-import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { getOAUTH } from '../functions/FetchOAuth';
@@ -19,10 +17,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Placeholder
     console.log('Username:', username);
     console.log('Password:', password);
-
     // Fetch stuff
   };
 

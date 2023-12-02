@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { Text } from 'react-native';
 import * as Font from 'expo-font';
+
+interface FontLoaderProps {
+  children: ReactNode;
+}
+
 /**
  * Loads fonts since its annoying in react-native
  * @param param0
  * @returns
  */
-const FontLoader = ({ children }) => {
+const FontLoader: React.FC<FontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {

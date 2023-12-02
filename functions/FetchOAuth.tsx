@@ -21,7 +21,7 @@ export async function getOAUTH(): Promise<string[]> {
     }
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to fetch OAuth data: ' + error.message);
+    throw new Error('Failed to fetch OAuth data: ' + (error as Error).message);
   }
 }
 
@@ -40,7 +40,7 @@ export async function redirectOAuth(
     return [code, state];
   } catch (error) {
     console.error('OAuth error:', error);
-    throw new Error('Error during OAuth: ' + error.message);
+    throw new Error('Error during OAuth: ' + (error as Error).message);
   }
 }
 
@@ -60,7 +60,7 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
     return result.data.oAuthToken;
   } catch (error) {
     console.error('OAuth error:', error);
-    throw new Error('Error during OAuth: ' + error.message);
+    throw new Error('Error during OAuth: ' + (error as Error).message);
   }
 }
 
