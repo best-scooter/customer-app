@@ -4,32 +4,12 @@ import { TextInput, Button as PaperButton, IconButton } from 'react-native-paper
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { extractCodeFromUrl } from '../functions/Helpers';
-
-//for oauth internet access
-import * as WebBrowser from "expo-web-browser";
-import * as Linking from "expo-linking";
-
 import { getOAUTH } from '../functions/FetchOAuth';
 import { redirectOAuth } from '../functions/FetchOAuth';
 import { postOAUTH } from '../functions/FetchOAuth';
 
-const CLIENT_ID2 = "ab37ccfd44b552a7f961" //Adam web
-const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
-
-//const REDIRECT_URI = "exp://192.168.0.10:8081"
-//const REDIRECT_URI = "exp://192.168.0.10:8081";
-//const AUTH_URL = "http://192.168.0.10:1337/customer/auth?redirectUrl=http://192.168.0.10:8081/authcallback"
-//const CLOWN_URL = "https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%192.168.0.10%8081%2Fauthcallback&scope=user%3Aemail&state=46x54el7qdq"
-//const GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=user`;
-
-
 const Login = () => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const ADDRESS = process.env.DEV_ADDRESS;
-
-  const [userInfo, setUserInfo] = useState(null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -45,24 +25,6 @@ const Login = () => {
   const handleRedirect = () => {
     navigation.navigate('Register');
   }
-
-  const postOAUTH2 = async (code: string, state: string) => {
-    try {
-      //normal route doesnt work it enforces redirect to predetermined url so this is a work around
-      const response = await fetch(`${ADDRESS}:1337/customer/auth?mobile=true`, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({"code": code, "state": state})
-      });
-      const result = await response.json();
-      console.log(result)
-
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const allInOne = async () => {
     try {
