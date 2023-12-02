@@ -4,11 +4,14 @@ import { TextInput, Button as PaperButton, IconButton } from 'react-native-paper
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import { extractCodeFromUrl } from '../functions/Helpers';
 
 //for oauth internet access
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
 
+import { getOAUTH } from '../functions/FetchOAuth';
+import { redirectOAuth } from '../functions/FetchOAuth';
 
 const CLIENT_ID2 = "ab37ccfd44b552a7f961" //Adam web
 const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
@@ -38,49 +41,9 @@ const Login = () => {
     // Fetch stuff
   };
 
-  const extractCodeFromUrl = (url) => {
-    const match = url.match(/code=([^&]+)/);
-    console.log(match)
-    return match[1];
-  };
-
   const handleRedirect = () => {
     navigation.navigate('Register');
   }
-
-  const handleOAUTH = async (redirectUrl: string, url: string, state: string) => {
-    try {
-      console.log(redirectUrl, url, state);
-      const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
-  
-      let code = extractCodeFromUrl(result.url)
-      console.log('Code:', code);
-  
-      postOAUTH(code, state)
-  
-    } catch (error) {
-      console.error('OAuth error:', error);
-    }
-  };
-
-  const getOAUTH = async () => {
-    //console.log(ADDRESS)
-    try {
-      const response = await fetch(`${ADDRESS}:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true`);
-      const result = await response.json();
-
-      if (result) {
-        const state = result.data.state
-
-        console.log(result)
-        handleOAUTH(result.data.redirectUrl, result.data.url, state)
-      } else {
-        console.log('Proccess Aborted')
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const postOAUTH = async (code: string, state: string) => {
     try {
@@ -100,6 +63,15 @@ const Login = () => {
     }
   };
 
+  const allInOne = async () => {
+    try {
+      const [redirectUrl, url, state]: string[] = await getOAUTH();
+      const [ code ] = await redirectOAuth(redirectUrl, url, state);
+      postOAUTH(code, state)
+    } catch (error) {
+      console.error('Error in allInOne:', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -143,7 +115,7 @@ const Login = () => {
         style={styles.buttonGoogle}
         labelStyle={{ color: 'white', fontWeight: 'bold' }}
         icon={'google'}
-        onPress={getOAUTH}
+        onPress={allInOne}
       >
         Continue with Google
       </PaperButton>

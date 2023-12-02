@@ -1,14 +1,14 @@
 import React from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
-import Markers from '../functions/Markers';
+import { generateMarkers } from '../functions/Markers';
 import Helpers from '../functions/Helpers';
 
 
 export default function App() {
     const regionLat = 37.79
     const regionLng = -122.43
-    const mapMarkers = Markers(3000, regionLat, regionLng, 0.1, -0.1) //0.1 -0.1 is the range between markers
+    const mapMarkers = generateMarkers(3000, regionLat, regionLng, 0.1, -0.1) //0.1 -0.1 is the range between markers
     //console.log(mapMarkers)
 
     const getStations = async () => {

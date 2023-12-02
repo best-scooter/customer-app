@@ -1,5 +1,5 @@
 import MapView, { Marker } from 'react-native-maps';
-import Helpers from './Helpers';
+import { RandomFloat } from './Helpers';
 
 //todo change away from export default
 
@@ -9,7 +9,7 @@ export function generateMarkers(n: number, lat:number, lng:number, rangeFloor:nu
         markers.push(
             <Marker
                 key={'Marker' + i}
-                coordinate={{latitude: (lat + Helpers(rangeFloor,rangeCeil)), longitude: (lng + Helpers(rangeFloor, rangeCeil))}}
+                coordinate={{latitude: (lat + RandomFloat(rangeFloor,rangeCeil)), longitude: (lng + RandomFloat(rangeFloor, rangeCeil))}}
                 title={'Title' + i}
             />
         )
