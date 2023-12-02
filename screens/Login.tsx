@@ -4,6 +4,7 @@ import { TextInput, Button as PaperButton, IconButton } from 'react-native-paper
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+
 //for oauth internet access
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
@@ -22,6 +23,7 @@ const CLIENT_ID = "8a13e643a21789547ad0" //David mobil app
 const Login = () => {
   const navigation = useNavigation();
   const route = useRoute();
+  const ADDRESS = process.env.DEV_ADDRESS;
 
   const [userInfo, setUserInfo] = useState(null);
 
@@ -62,13 +64,19 @@ const Login = () => {
   };
 
   const getOAUTH = async () => {
+    //console.log(ADDRESS)
     try {
-      const response = await fetch("http://192.168.0.10:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true");
+      const response = await fetch(`${ADDRESS}:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true`);
       const result = await response.json();
-      const state = result.data.state
 
-      console.log(result)
-      handleOAUTH(result.data.redirectUrl, result.data.url, state)
+      if (result) {
+        const state = result.data.state
+
+        console.log(result)
+        handleOAUTH(result.data.redirectUrl, result.data.url, state)
+      } else {
+        console.log('Proccess Aborted')
+      }
     } catch (error) {
       console.error(error);
     }
@@ -77,7 +85,7 @@ const Login = () => {
   const postOAUTH = async (code: string, state: string) => {
     try {
       //normal route doesnt work it enforces redirect to predetermined url so this is a work around
-      const response = await fetch("http://192.168.0.10:1337/customer/auth?mobile=true", {
+      const response = await fetch(`${ADDRESS}:1337/customer/auth?mobile=true`, {
         headers: {
           'Content-Type': 'application/json'
         },
@@ -91,23 +99,7 @@ const Login = () => {
       console.error(error);
     }
   };
-  
-  const handleOAuthResponse = async (responseUrl: string) => {
-    try {
-      const parsedUrl = Linking.parse(responseUrl);
-      console.log('parsed: ' , parsedUrl)
 
-    } catch (error) {
-      console.error('OAuth response handling error:', error);
-    }
-  };
-
-  const getTest = async () => {
-    try {
-      Linking.openURL('https://github.com/login/oauth/authorize?allow_signup=true&client_id=ab37ccfd44b552a7f961&redirect_uri=exp%3A%2F%2F192.168.0.10%3A8081&scope=user%3Aemail&state=hgz8pzixqnj');
-    } catch (error) {
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -154,15 +146,6 @@ const Login = () => {
         onPress={getOAUTH}
       >
         Continue with Google
-      </PaperButton>
-      <PaperButton
-        mode='contained'
-        style={styles.buttonGoogle}
-        labelStyle={{ color: 'black', fontWeight: 'bold' }}
-        icon={'apple'}
-        onPress={getTest}
-      >
-        Continue with Testing
       </PaperButton>
     </View>
   );

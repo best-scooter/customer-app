@@ -11,6 +11,10 @@ export default function App() {
     const mapMarkers = Markers(3000, regionLat, regionLng, 0.1, -0.1) //0.1 -0.1 is the range between markers
     //console.log(mapMarkers)
 
+    const getStations = async () => {
+      
+    }
+
 
     return (
         <View style={styles.container}>
