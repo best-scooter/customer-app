@@ -20,7 +20,7 @@ const Login = () => {
     alert(ip);
   };
 
-  ipAlert();
+  //ipAlert();
 
   const handleLogin = () => {
     console.log('Username:', username);
