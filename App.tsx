@@ -1,16 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
   faHome,
-  faList,
   faCog,
   faUser,
   faMap,
-  faCartShopping,
   faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -59,7 +57,7 @@ export default function App() {
             name={homeName}
             component={Home}
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <>
                   <FontAwesomeIcon
                     icon={faHome}
@@ -82,7 +80,7 @@ export default function App() {
             name={MapName}
             component={Map}
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <>
                   <FontAwesomeIcon
                     icon={faMap}
@@ -105,7 +103,7 @@ export default function App() {
             name={RentName}
             component={Rent}
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <>
                   <FontAwesomeIcon
                     icon={faShoppingCart}
@@ -128,7 +126,7 @@ export default function App() {
             name={LoginName}
             component={Login}
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <>
                   <FontAwesomeIcon
                     icon={faUser}
@@ -151,7 +149,7 @@ export default function App() {
             name={RegisterName}
             component={Register}
             options={{
-              tabBarIcon: ({ focused, color, size }) => (
+              tabBarIcon: ({ focused, size }) => (
                 <>
                   <FontAwesomeIcon
                     icon={faCog}

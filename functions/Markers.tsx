@@ -1,4 +1,5 @@
-import MapView, { Marker } from 'react-native-maps';
+import React from 'react';
+import { Marker } from 'react-native-maps';
 import { RandomFloat } from './Helpers';
 
 //todo change away from export default
@@ -28,12 +29,13 @@ export function generateMarkers(
 
 export function placeMarkers(mapItems: object): JSX.Element[] {
   const markers: JSX.Element[] = [];
-  return markers
+  console.log(mapItems);
+  return markers;
   //
 }
 
 export function placeStations(): JSX.Element[] {
   const markers: JSX.Element[] = [];
-  return markers
+  return markers;
   //
 }

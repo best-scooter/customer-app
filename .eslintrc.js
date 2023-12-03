@@ -5,11 +5,11 @@ module.exports = {
     'airbnb-typescript',
     'plugin:jest/recommended',
     'plugin:jest/style',
-    'prettier',
+    'prettier'
   ],
-  plugins: ['jest', 'prettier'],
+  plugins: ['jest', 'prettier', 'import'],
   env: {
-    'jest/globals': true,
+    'jest/globals': true
   },
   rules: {
     'jest/no-disabled-tests': 'warn',
@@ -17,8 +17,26 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/prefer-to-have-length': 'warn',
     'jest/valid-expect': 'error',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never'
+      }
+    ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: true,
+        optionalDependencies: false,
+        peerDependencies: false
+      }
+    ]
   },
   parserOptions: {
-    project: './tsconfig.json',
-  },
+    project: './tsconfig.json'
+  }
 };

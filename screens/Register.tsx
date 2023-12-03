@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
-import { FontAwesome } from '@expo/vector-icons';
 import { styles } from '../components/Styles';
 
 const Register = () => {

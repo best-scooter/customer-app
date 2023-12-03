@@ -2,7 +2,7 @@ const ADDRESS = process.env.DEV_ADDRESS;
 import * as WebBrowser from 'expo-web-browser';
 import { extractCodeFromUrl } from './Helpers';
 
-type postTokenResponse = {
+type PostTokenResponse = {
   data: {
     token: string;
     email: string;
@@ -41,7 +41,7 @@ export async function redirectOAuth(
   try {
     const result = await WebBrowser.openAuthSessionAsync(urlIn, redirectUrl);
     // @ts-ignore
-    const url = result.url //lint err, not actual error..
+    const url = result.url; //lint err, not actual error..
     const code = extractCodeFromUrl(url);
 
     //console.log('Code:', code);
@@ -78,7 +78,7 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
 export async function postToken(
   oAuthToken: string,
   email: string = 'standard.gmail.com'
-): Promise<postTokenResponse> {
+): Promise<PostTokenResponse> {
   try {
     const response = await fetch(`${ADDRESS}:1337/customer/token`, {
       headers: {
@@ -106,13 +106,3 @@ export async function postToken(
     );
   }
 }
-
-const getStations = async () => {
-  const response = await fetch(
-    'http://192.168.0.10:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true'
-  );
-  const result = await response.json();
-  const state = result.data.state;
-  //console.log(result)
-  return result;
-};

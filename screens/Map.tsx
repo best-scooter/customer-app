@@ -1,5 +1,5 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView from 'react-native-maps';
 import { StyleSheet, View } from 'react-native';
 import { generateMarkers } from '../functions/Markers';
 
@@ -17,8 +17,6 @@ export default function App() {
       height: '100%'
     }
   });
-
-  const getStations = async () => {};
 
   return (
     <View style={styles.container}>

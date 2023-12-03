@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { styles } from '../components/Styles';
 
 import { getOAUTH } from '../functions/FetchOAuth';
@@ -9,7 +9,7 @@ import { redirectOAuth } from '../functions/FetchOAuth';
 import { postOAUTH } from '../functions/FetchOAuth';
 import { postToken } from '../functions/FetchOAuth';
 
-import * as Network from 'expo-network';
+//import * as Network from 'expo-network';
 
 const Login = () => {
   const navigation = useNavigation();
@@ -17,10 +17,10 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const ipAlert = async () => {
-    const ip = await Network.getIpAddressAsync();
-    alert(ip);
-  };
+  // const ipAlert = async () => {
+  //   const ip = await Network.getIpAddressAsync();
+  //   alert(ip);
+  // };
 
   //ipAlert();
 
@@ -41,7 +41,7 @@ const Login = () => {
       const [code] = await redirectOAuth(redirectUrl, url, state);
       const token = await postOAUTH(code, state);
       const jwt = await postToken(token);
-      console.log('All clear, your token is: ', token);
+      console.log('All clear, your token is: ', jwt);
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
