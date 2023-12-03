@@ -10,7 +10,8 @@ import {
   faCog,
   faUser,
   faMap,
-  faCartShopping
+  faCartShopping,
+  faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
 
 import FontLoader from './components/FontsLoader';
@@ -34,11 +35,11 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName={homeName}
-          tabBarOptions={{
-            activeTintColor: 'tomato',
-            inactiveTintColor: 'grey',
-            labelStyle: { fontSize: 12 },
-            style: {
+          screenOptions={{
+            tabBarActiveTintColor: 'tomato',
+            tabBarInactiveTintColor: 'grey',
+            tabBarLabelStyle: { fontSize: 16, marginBottom: -20 },
+            tabBarStyle: {
               position: 'absolute',
               bottom: 0,
               left: 0,
@@ -59,11 +60,14 @@ export default function App() {
             component={Home}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
+                <>
                 <FontAwesomeIcon
                   icon={faHome}
                   size={size}
                   color={focused ? 'tomato' : 'grey'}
                 />
+                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{homeName}</Text>
+                </>
               )
             }}
           />
@@ -72,11 +76,14 @@ export default function App() {
             component={Map}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
+                <>
                 <FontAwesomeIcon
                   icon={faMap}
                   size={size}
                   color={focused ? 'tomato' : 'grey'}
                 />
+                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{MapName}</Text>
+                </>
               )
             }}
           />
@@ -85,11 +92,14 @@ export default function App() {
             component={Rent}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
+                <>
                 <FontAwesomeIcon
-                  icon={faCartShopping}
+                  icon={faShoppingCart}
                   size={size}
                   color={focused ? 'tomato' : 'grey'}
                 />
+                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{MapName}</Text>
+                </>
               )
             }}
           />
@@ -98,11 +108,14 @@ export default function App() {
             component={Login}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
+                <>
                 <FontAwesomeIcon
                   icon={faUser}
                   size={size}
                   color={focused ? 'tomato' : 'grey'}
                 />
+                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{LoginName}</Text>
+                </>
               )
             }}
           />
@@ -111,11 +124,14 @@ export default function App() {
             component={Register}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
+                <>
                 <FontAwesomeIcon
                   icon={faCog}
                   size={size}
                   color={focused ? 'tomato' : 'grey'}
                 />
+                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{RegisterName}</Text>
+                </>
               )
             }}
           />

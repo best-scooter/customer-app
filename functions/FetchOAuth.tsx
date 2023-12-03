@@ -40,7 +40,6 @@ export async function redirectOAuth(
   state: string
 ): Promise<string[]> {
   try {
-    //console.log(redirectUrl, url, state);
     const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
     const code = extractCodeFromUrl(result.url);
 
