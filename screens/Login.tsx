@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { getOAUTH } from '../functions/FetchOAuth';
 import { redirectOAuth } from '../functions/FetchOAuth';
 import { postOAUTH } from '../functions/FetchOAuth';
+import { postToken } from '../functions/FetchOAuth';
 
 import * as Network from 'expo-network';
 
@@ -37,6 +38,7 @@ const Login = () => {
       const [redirectUrl, url, state]: string[] = await getOAUTH();
       const [code] = await redirectOAuth(redirectUrl, url, state);
       const token = await postOAUTH(code, state);
+      const jwt = await postToken(token);
       console.log('All clear, your token is: ', token);
     } catch (error) {
       console.error('Error in allInOne:', error);

@@ -2,6 +2,15 @@ const ADDRESS = process.env.DEV_ADDRESS;
 import * as WebBrowser from 'expo-web-browser';
 import { extractCodeFromUrl } from './Helpers';
 
+type postTokenResponse = {
+  data: {
+    token: string;
+    email: string;
+    customerId: number;
+  };
+};
+
+
 export async function getOAUTH(): Promise<string[]> {
   try {
     const response = await fetch(
@@ -54,13 +63,38 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
       body: JSON.stringify({ code: code, state: state })
     });
     const result = await response.json();
-    //console.log('res: ', result)
-    //console.log(result.data.oAuthToken)
-
-    return result.data.oAuthToken;
+    if (result && result.data) {
+      return result.data.oAuthToken;
+    } else {
+      console.log('Res returned empty');
+      throw new Error('Data not found in the response');
+    }
   } catch (error) {
     console.error('OAuth error:', error);
     throw new Error('Error during OAuth: ' + (error as Error).message);
+  }
+}
+
+export async function postToken(oAuthToken: string, email: string="standard.gmail.com"): Promise<postTokenResponse> {
+  try {
+    const response = await fetch(`${ADDRESS}:1337/customer/token`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({oAuthToken, email})
+    });
+    const result = await response.json();
+    if (result && result.data) {
+      console.log('token res: ', result);
+      return result
+    } else {
+      console.log('Res returned empty');
+      throw new Error('Data not found in the response');
+    }
+  } catch(error) {
+    console.error('post token error most likely youre not in production: ', error);
+    throw new Error('post token error most likely youre not in production: ' + (error as Error).message);
   }
 }
 
