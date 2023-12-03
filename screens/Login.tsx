@@ -10,11 +10,22 @@ import { getOAUTH } from '../functions/FetchOAuth';
 import { redirectOAuth } from '../functions/FetchOAuth';
 import { postOAUTH } from '../functions/FetchOAuth';
 
+import * as Network from 'expo-network';
+
 const Login = () => {
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+
+
+  const ipAlert = async () => {
+    const ip = await Network.getIpAddressAsync()
+    alert(ip);
+  };
+
+  ipAlert();
 
   const handleLogin = () => {
     console.log('Username:', username);

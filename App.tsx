@@ -1,23 +1,23 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHome, faList, faCog, faUser, faMap, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
+import FontLoader from './components/FontsLoader';
 import Home from './screens/Home';
 import Rent from './screens/Rent';
 import Map from './screens/Map';
 import Login from './screens/Login';
 import Register from './screens/Register';
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontLoader from './components/FontsLoader';
-
 const homeName = 'Home';
 const MapName = 'Map';
 const RentName = 'Rent';
 const LoginName = 'Login';
-const RegisterName = 'Register'; //remove later just here for testing after ill have a link from login page
+const RegisterName = 'Register';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,11 +27,11 @@ export default function App() {
       <NavigationContainer>
         <Tab.Navigator
           initialRouteName={homeName}
-          screenOptions={({ route }) => ({
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'grey',
-            tabBarLabelStyle: { fontSize: 12 },
-            tabBarStyle: {
+          tabBarOptions={{
+            activeTintColor: 'tomato',
+            inactiveTintColor: 'grey',
+            labelStyle: { fontSize: 12 },
+            style: {
               position: 'absolute',
               bottom: 0,
               left: 0,
@@ -43,29 +43,53 @@ export default function App() {
               height: 60,
               flexDirection: 'row',
               justifyContent: 'space-around',
-              alignItems: 'center'
+              alignItems: 'center',
             },
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-              let rn = route.name;
-              if (rn === homeName) {
-                iconName = focused ? 'home' : 'home-outline';
-              } else if (rn === MapName) {
-                iconName = focused ? 'list' : 'list-outline';
-              } else if (rn === RentName) {
-                iconName = focused ? 'settings' : 'settings-outline';
-              } else if (rn === LoginName) {
-                iconName = focused ? 'settings' : 'settings-outline';
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            }
-          })}
+          }}
         >
-          <Tab.Screen name={homeName} component={Home} />
-          <Tab.Screen name={MapName} component={Map} />
-          <Tab.Screen name={RentName} component={Rent} />
-          <Tab.Screen name={LoginName} component={Login} />
-          <Tab.Screen name={RegisterName} component={Register} />
+          <Tab.Screen
+            name={homeName}
+            component={Home}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <FontAwesomeIcon icon={faHome} size={size} color={focused ? 'tomato' : 'grey'} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name={MapName}
+            component={Map}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <FontAwesomeIcon icon={faMap} size={size} color={focused ? 'tomato' : 'grey'} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name={RentName}
+            component={Rent}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <FontAwesomeIcon icon={faCartShopping} size={size} color={focused ? 'tomato' : 'grey'} />
+              ),
+            }}
+          />
+          <Tab.Screen name={LoginName}
+          component={Login}
+          options={{
+            tabBarIcon: ({ focused, color, size}) => (
+              <FontAwesomeIcon icon={faUser} size={size} color={focused ? 'tomato' : 'grey'} />
+            ),
+          }}
+           />
+          <Tab.Screen name={RegisterName}
+          component={Register}
+          options={{
+            tabBarIcon: ({ focused, color, size}) => (
+              <FontAwesomeIcon icon={faCog} size={size} color={focused ? 'tomato' : 'grey'} />
+            ),
+          }}
+          />
         </Tab.Navigator>
         <StatusBar style="auto" />
       </NavigationContainer>
