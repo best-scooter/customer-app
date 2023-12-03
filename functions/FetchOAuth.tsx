@@ -10,7 +10,6 @@ type postTokenResponse = {
   };
 };
 
-
 export async function getOAUTH(): Promise<string[]> {
   try {
     const response = await fetch(
@@ -74,26 +73,35 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
   }
 }
 
-export async function postToken(oAuthToken: string, email: string="standard.gmail.com"): Promise<postTokenResponse> {
+export async function postToken(
+  oAuthToken: string,
+  email: string = 'standard.gmail.com'
+): Promise<postTokenResponse> {
   try {
     const response = await fetch(`${ADDRESS}:1337/customer/token`, {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'POST',
-      body: JSON.stringify({oAuthToken, email})
+      body: JSON.stringify({ oAuthToken, email })
     });
     const result = await response.json();
     if (result && result.data) {
       console.log('token res: ', result);
-      return result
+      return result;
     } else {
       console.log('Res returned empty');
       throw new Error('Data not found in the response');
     }
-  } catch(error) {
-    console.error('post token error most likely youre not in production: ', error);
-    throw new Error('post token error most likely youre not in production: ' + (error as Error).message);
+  } catch (error) {
+    console.error(
+      'post token error most likely youre not in production: ',
+      error
+    );
+    throw new Error(
+      'post token error most likely youre not in production: ' +
+        (error as Error).message
+    );
   }
 }
 

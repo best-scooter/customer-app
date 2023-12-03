@@ -61,12 +61,19 @@ export default function App() {
             options={{
               tabBarIcon: ({ focused, color, size }) => (
                 <>
-                <FontAwesomeIcon
-                  icon={faHome}
-                  size={size}
-                  color={focused ? 'tomato' : 'grey'}
-                />
-                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{homeName}</Text>
+                  <FontAwesomeIcon
+                    icon={faHome}
+                    size={size}
+                    color={focused ? 'tomato' : 'grey'}
+                  />
+                  <Text
+                    style={{
+                      color: focused ? 'tomato' : 'grey',
+                      marginTop: 15
+                    }}
+                  >
+                    {homeName}
+                  </Text>
                 </>
               )
             }}
@@ -77,12 +84,19 @@ export default function App() {
             options={{
               tabBarIcon: ({ focused, color, size }) => (
                 <>
-                <FontAwesomeIcon
-                  icon={faMap}
-                  size={size}
-                  color={focused ? 'tomato' : 'grey'}
-                />
-                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{MapName}</Text>
+                  <FontAwesomeIcon
+                    icon={faMap}
+                    size={size}
+                    color={focused ? 'tomato' : 'grey'}
+                  />
+                  <Text
+                    style={{
+                      color: focused ? 'tomato' : 'grey',
+                      marginTop: 15
+                    }}
+                  >
+                    {MapName}
+                  </Text>
                 </>
               )
             }}
@@ -93,12 +107,19 @@ export default function App() {
             options={{
               tabBarIcon: ({ focused, color, size }) => (
                 <>
-                <FontAwesomeIcon
-                  icon={faShoppingCart}
-                  size={size}
-                  color={focused ? 'tomato' : 'grey'}
-                />
-                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{MapName}</Text>
+                  <FontAwesomeIcon
+                    icon={faShoppingCart}
+                    size={size}
+                    color={focused ? 'tomato' : 'grey'}
+                  />
+                  <Text
+                    style={{
+                      color: focused ? 'tomato' : 'grey',
+                      marginTop: 15
+                    }}
+                  >
+                    {MapName}
+                  </Text>
                 </>
               )
             }}
@@ -109,12 +130,19 @@ export default function App() {
             options={{
               tabBarIcon: ({ focused, color, size }) => (
                 <>
-                <FontAwesomeIcon
-                  icon={faUser}
-                  size={size}
-                  color={focused ? 'tomato' : 'grey'}
-                />
-                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{LoginName}</Text>
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    size={size}
+                    color={focused ? 'tomato' : 'grey'}
+                  />
+                  <Text
+                    style={{
+                      color: focused ? 'tomato' : 'grey',
+                      marginTop: 15
+                    }}
+                  >
+                    {LoginName}
+                  </Text>
                 </>
               )
             }}
@@ -125,12 +153,19 @@ export default function App() {
             options={{
               tabBarIcon: ({ focused, color, size }) => (
                 <>
-                <FontAwesomeIcon
-                  icon={faCog}
-                  size={size}
-                  color={focused ? 'tomato' : 'grey'}
-                />
-                <Text style={{ color: focused ? 'tomato' : 'grey', marginTop: 15 }}>{RegisterName}</Text>
+                  <FontAwesomeIcon
+                    icon={faCog}
+                    size={size}
+                    color={focused ? 'tomato' : 'grey'}
+                  />
+                  <Text
+                    style={{
+                      color: focused ? 'tomato' : 'grey',
+                      marginTop: 15
+                    }}
+                  >
+                    {RegisterName}
+                  </Text>
                 </>
               )
             }}
