@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import {
-  TextInput,
-  Button as PaperButton,
-} from 'react-native-paper';
+import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { getOAUTH } from '../functions/FetchOAuth';
@@ -18,10 +15,8 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-
-
   const ipAlert = async () => {
-    const ip = await Network.getIpAddressAsync()
+    const ip = await Network.getIpAddressAsync();
     alert(ip);
   };
 

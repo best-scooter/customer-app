@@ -4,7 +4,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHome, faList, faCog, faUser, faMap, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import {
+  faHome,
+  faList,
+  faCog,
+  faUser,
+  faMap,
+  faCartShopping
+} from '@fortawesome/free-solid-svg-icons';
 
 import FontLoader from './components/FontsLoader';
 import Home from './screens/Home';
@@ -43,8 +50,8 @@ export default function App() {
               height: 60,
               flexDirection: 'row',
               justifyContent: 'space-around',
-              alignItems: 'center',
-            },
+              alignItems: 'center'
+            }
           }}
         >
           <Tab.Screen
@@ -52,8 +59,12 @@ export default function App() {
             component={Home}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
-                <FontAwesomeIcon icon={faHome} size={size} color={focused ? 'tomato' : 'grey'} />
-              ),
+                <FontAwesomeIcon
+                  icon={faHome}
+                  size={size}
+                  color={focused ? 'tomato' : 'grey'}
+                />
+              )
             }}
           />
           <Tab.Screen
@@ -61,8 +72,12 @@ export default function App() {
             component={Map}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
-                <FontAwesomeIcon icon={faMap} size={size} color={focused ? 'tomato' : 'grey'} />
-              ),
+                <FontAwesomeIcon
+                  icon={faMap}
+                  size={size}
+                  color={focused ? 'tomato' : 'grey'}
+                />
+              )
             }}
           />
           <Tab.Screen
@@ -70,25 +85,39 @@ export default function App() {
             component={Rent}
             options={{
               tabBarIcon: ({ focused, color, size }) => (
-                <FontAwesomeIcon icon={faCartShopping} size={size} color={focused ? 'tomato' : 'grey'} />
-              ),
+                <FontAwesomeIcon
+                  icon={faCartShopping}
+                  size={size}
+                  color={focused ? 'tomato' : 'grey'}
+                />
+              )
             }}
           />
-          <Tab.Screen name={LoginName}
-          component={Login}
-          options={{
-            tabBarIcon: ({ focused, color, size}) => (
-              <FontAwesomeIcon icon={faUser} size={size} color={focused ? 'tomato' : 'grey'} />
-            ),
-          }}
-           />
-          <Tab.Screen name={RegisterName}
-          component={Register}
-          options={{
-            tabBarIcon: ({ focused, color, size}) => (
-              <FontAwesomeIcon icon={faCog} size={size} color={focused ? 'tomato' : 'grey'} />
-            ),
-          }}
+          <Tab.Screen
+            name={LoginName}
+            component={Login}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <FontAwesomeIcon
+                  icon={faUser}
+                  size={size}
+                  color={focused ? 'tomato' : 'grey'}
+                />
+              )
+            }}
+          />
+          <Tab.Screen
+            name={RegisterName}
+            component={Register}
+            options={{
+              tabBarIcon: ({ focused, color, size }) => (
+                <FontAwesomeIcon
+                  icon={faCog}
+                  size={size}
+                  color={focused ? 'tomato' : 'grey'}
+                />
+              )
+            }}
           />
         </Tab.Navigator>
         <StatusBar style="auto" />
