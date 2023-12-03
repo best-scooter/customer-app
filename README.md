@@ -10,3 +10,4 @@ Download Expo Go app or emulator of your choice, i recommend(Android Studios)
 5. connect your mobile device to your host Ip through the Expo Go App, example address: exp://(192.123.0.10):8081.
 
 Login doesn't support dynamic ip atm, it's a problem that solves it self upon deployment.
+# customer-app
