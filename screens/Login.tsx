@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { styles } from '../components/Styles';
 
 import { getOAUTH } from '../functions/FetchOAuth';
 import { redirectOAuth } from '../functions/FetchOAuth';
@@ -94,58 +95,5 @@ const Login = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  input: {
-    width: '80%',
-    height: 50,
-    marginBottom: 20
-  },
-  headerContainerText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'left'
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  button: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#007bff',
-    justifyContent: 'center',
-    marginBottom: 20
-  },
-  buttonSecondary: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#28a745',
-    justifyContent: 'center'
-  },
-  buttonTextSecondary: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  buttonGoogle: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'tomato',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
 
 export default Login;

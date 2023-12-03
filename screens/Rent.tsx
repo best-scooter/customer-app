@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Button, ImageBackground } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { styles } from '../components/Styles';
 
 const Rent = () => {
   const [userInput, setUserInput] = useState('');
@@ -28,7 +29,7 @@ const Rent = () => {
 
   const handleBarCodeScanned = ({ type, data }: BarcodeData) => {
     setScanned(true);
-    alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
+    //alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
   };
 
   useEffect(() => {
@@ -127,86 +128,5 @@ const Rent = () => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  background: {
-    flex: 1,
-    resizeMode: 'cover'
-  },
-  overlay: {
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    flex: 1,
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20
-  },
-  input: {
-    width: '80%',
-    height: 50,
-    margin: 20,
-    backgroundColor: 'white'
-  },
-  headerContainerText: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'left',
-    color: 'white'
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  button: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#007bff',
-    justifyContent: 'center',
-    marginBottom: 20
-  },
-  buttonReturn: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#007bff',
-    justifyContent: 'center',
-    marginBottom: 20
-  },
-  buttonReturnContainer: {
-    position: 'absolute',
-    bottom: 70,
-    width: '100%',
-    alignItems: 'center'
-  },
-  buttonSecondary: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#28a745',
-    justifyContent: 'center'
-  },
-  buttonTextSecondary: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18
-  },
-  buttonGoogle: {
-    width: '80%',
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'tomato',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    alignItems: 'center'
-  }
-});
 
 export default Rent;

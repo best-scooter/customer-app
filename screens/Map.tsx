@@ -8,6 +8,16 @@ export default function App() {
   const regionLng = -122.43;
   const mapMarkers = generateMarkers(3000, regionLat, regionLng, 0.1, -0.1); //0.1 -0.1 is the range between markers
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+    map: {
+      width: '100%',
+      height: '100%'
+    }
+  });
+
   const getStations = async () => {};
 
   return (
@@ -26,13 +36,3 @@ export default function App() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  map: {
-    width: '100%',
-    height: '100%'
-  }
-});
