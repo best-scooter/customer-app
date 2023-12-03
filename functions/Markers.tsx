@@ -28,9 +28,12 @@ export function generateMarkers(
 
 export function placeMarkers(mapItems: object): JSX.Element[] {
   const markers: JSX.Element[] = [];
+  return markers
   //
 }
 
 export function placeStations(): JSX.Element[] {
   const markers: JSX.Element[] = [];
+  return markers
+  //
 }

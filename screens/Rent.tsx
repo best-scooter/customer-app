@@ -10,6 +10,11 @@ const Rent = () => {
   const [useManualInput, setUseManualInput] = useState(false);
   const [showCamera, setShowCamera] = useState(false);
 
+  type BarcodeData = {
+    type: string;
+    data: string;
+  };
+
   const handleQRCode = () => {
     setUseManualInput(false);
     setShowCamera(true);
@@ -21,7 +26,7 @@ const Rent = () => {
     console.log('userInput:', userInput);
   };
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }: BarcodeData) => {
     setScanned(true);
     alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
   };
@@ -29,7 +34,8 @@ const Rent = () => {
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      // @ts-ignore
+      setHasPermission(status === 'granted'); //this is not boolean ts is on drugs
     };
 
     getBarCodeScannerPermissions();
@@ -81,7 +87,7 @@ const Rent = () => {
               onChangeText={setUserInput}
               label="Enter Bike ID"
               style={styles.input}
-              left={<TextInput.Icon name="lock" />}
+              left={<TextInput.Icon icon="key" />}
             />
             <PaperButton
               mode="contained"

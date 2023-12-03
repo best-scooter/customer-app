@@ -30,7 +30,8 @@ const Login = () => {
   };
 
   const handleRedirect = () => {
-    navigation.navigate('Register');
+    // @ts-ignore
+    navigation.navigate('Register'); //ts doesn't like this library
   };
 
   const allInOne = async () => {
@@ -85,10 +86,10 @@ const Login = () => {
         mode="contained"
         style={styles.buttonGoogle}
         labelStyle={{ color: 'white', fontWeight: 'bold' }}
-        icon={'google'}
+        icon={'github'}
         onPress={allInOne}
       >
-        Continue with Google
+        Continue with GitHub
       </PaperButton>
     </View>
   );

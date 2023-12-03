@@ -35,12 +35,14 @@ export async function getOAUTH(): Promise<string[]> {
 
 export async function redirectOAuth(
   redirectUrl: string,
-  url: string,
+  urlIn: string,
   state: string
 ): Promise<string[]> {
   try {
-    const result = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
-    const code = extractCodeFromUrl(result.url);
+    const result = await WebBrowser.openAuthSessionAsync(urlIn, redirectUrl);
+    // @ts-ignore
+    const url = result.url //lint err, not actual error..
+    const code = extractCodeFromUrl(url);
 
     //console.log('Code:', code);
 
