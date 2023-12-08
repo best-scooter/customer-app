@@ -4,10 +4,7 @@ import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../components/Styles';
 
-import { getOAUTH } from '../functions/FetchOAuth';
-import { redirectOAuth } from '../functions/FetchOAuth';
-import { postOAUTH } from '../functions/FetchOAuth';
-import { postToken } from '../functions/FetchOAuth';
+import { getOAUTH, redirectOAuth, postOAUTH, postToken } from '../functions/FetchOAuth';
 
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
@@ -17,13 +14,6 @@ const Login = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  // const ipAlert = async () => {
-  //   const ip = await Network.getIpAddressAsync();
-  //   alert(ip);
-  // };
-
-  //ipAlert();
 
   const handleLogin = () => {
     console.log('Username:', username);

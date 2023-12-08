@@ -12,9 +12,7 @@ import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { styles } from '../components/Styles';
 
-import { getScooter } from '../functions/FetchScooter';
-import { putScooter } from '../functions/FetchScooter';
-import { getScooterToken } from '../functions/FetchScooter';
+import { getScooter, putScooter, getScooterToken } from '../functions/FetchScooter';
 import { retrieveToken } from '../functions/SecureStore';
 
 const Rent = () => {
