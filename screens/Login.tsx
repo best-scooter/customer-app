@@ -9,6 +9,7 @@ import { redirectOAuth } from '../functions/FetchOAuth';
 import { postOAUTH } from '../functions/FetchOAuth';
 import { postToken } from '../functions/FetchOAuth';
 
+import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
 
 const Login = () => {
@@ -42,6 +43,7 @@ const Login = () => {
       const token = await postOAUTH(code, state);
       const jwt = await postToken(token);
       console.log('All clear, your token is: ', jwt);
+      storeToken("jwtLogin", jwt.oAuthToken); #check up later
     } catch (error) {
       console.error('Error in allInOne:', error);
     }

@@ -4,6 +4,13 @@ import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { styles } from '../components/Styles';
 
+import { getScooter } from '../functions/FetchScooter';
+import { putScooter } from '../functions/FetchScooter';
+import { getScooterToken } from '../functions/FetchScooter';
+import { retrieveToken } from '../functions/SecureStore';
+
+
+
 const Rent = () => {
   const [userInput, setUserInput] = useState('');
   const [hasPermission, setHasPermission] = useState(null);
@@ -27,13 +34,47 @@ const Rent = () => {
     console.log('userInput:', userInput);
   };
 
-  const handleBarCodeScanned = ({ type, data }: BarcodeData) => {
+  const handleBarCodeScanned = async ({ type, data }: BarcodeData) => {
     setScanned(true);
     console.log(
       `Bar code with type: ${type} and data: ${data} has been scanned!`
     );
+    const res = await getScooter(data)
+    console.log('scooter byId: ', res);
+    if (res) { //&& res.available
+
+        //Getting ScooterToken to authenticate put request
+        const ScooterToken = await getScooterToken(data)
+        console.log("ScooterToken: ", ScooterToken)
+        //const test = await retrieveToken('ScooterToken');
+        //console.log("test: ", test)
+
+        console.log('pre putScooter data: ', data, ScooterToken)
+        const putRes = await putScooter(data, ScooterToken.token, false);
+        
+        console.log("put res wId: ", putRes)
+        const afterUpdate = await getScooter(data)
+        console.log("beforeUpdate", res)
+        console.log("afterUpdate: ", afterUpdate)
+        // start trip
+        // and calculate cost
+        // make it like a transaction so that it doesn't start if error happens further down the function chain
+
+    }
     //alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
   };
+
+  const startTrip = async () => {
+
+  }
+
+  const returnScooter = async () => {
+    //get bike customer
+    // get scooter location for cost
+    // send request to scooterapp to get the final cost
+    // withdraw money
+    // end scooter rental
+  }
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
