@@ -43,7 +43,7 @@ const Login = () => {
       const token = await postOAUTH(code, state);
       const jwt = await postToken(token);
       console.log('All clear, your token is: ', jwt);
-      storeToken("jwtLogin", jwt.oAuthToken); #check up later
+      storeToken('jwtLogin', jwt.oAuthToken); //check up later
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
