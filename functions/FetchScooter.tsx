@@ -92,10 +92,6 @@ export async function putScooter(
       // Successful "No Content" response
       console.log('Scooter availability updated successfully');
       return response.status;
-    }
-
-    if (response.status !== 204) {
-      console.log('Failure in response');
     } else {
       throw new Error('Data not found in the response');
     }

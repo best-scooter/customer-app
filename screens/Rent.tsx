@@ -12,8 +12,12 @@ import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { styles } from '../components/Styles';
 
-import { getScooter, putScooter, getScooterToken } from '../functions/FetchScooter';
-import { retrieveToken } from '../functions/SecureStore';
+import {
+  getScooter,
+  putScooter,
+  getScooterToken
+} from '../functions/FetchScooter';
+import { retrieveToken, removeToken } from '../functions/SecureStore';
 
 const Rent = () => {
   const [userInput, setUserInput] = useState('');
@@ -95,6 +99,7 @@ const Rent = () => {
     // end scooter rental
     setisRenting(false); // disable button from view
     setUseManualInput(false);
+    removeToken('ScooterToken'); // remove the scooters token from storage
   };
 
   useEffect(() => {

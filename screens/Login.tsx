@@ -4,7 +4,12 @@ import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../components/Styles';
 
-import { getOAUTH, redirectOAuth, postOAUTH, postToken } from '../functions/FetchOAuth';
+import {
+  getOAUTH,
+  redirectOAuth,
+  postOAUTH,
+  postToken
+} from '../functions/FetchOAuth';
 
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
@@ -33,7 +38,8 @@ const Login = () => {
       const token = await postOAUTH(code, state);
       const jwt = await postToken(token);
       console.log('All clear, your token is: ', jwt);
-      storeToken('jwtLogin', jwt.oAuthToken); //check up later
+      //console.log('jwtdataoauth: ', jwt.data.token)
+      storeToken('jwtLogin', jwt.data.token); //check up later
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
