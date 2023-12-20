@@ -15,7 +15,12 @@ type GetZonesReturn = {
   ];
 };
 
-export async function getZones(customerToken): Promise<GetZonesReturn> {
+/**
+ * 
+ * @param {string} customerToken - customers login token 
+ * @returns 
+ */
+export async function getZones(customerToken: string): Promise<GetZonesReturn> {
   //const customerToken = retrieveToken('jwtLogin')
   try {
     const response = await fetch(`${ADDRESS}:1337/zone`, {

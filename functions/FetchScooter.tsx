@@ -24,6 +24,11 @@ type GetScooterToken = {
   scooterId: number;
 };
 
+/**
+ * 
+ * @param {string} scooterId - scooters id 
+ * @returns {GetScooterResponse}
+ */
 export async function getScooter(
   scooterId: string
 ): Promise<GetScooterResponse> {
@@ -37,11 +42,46 @@ export async function getScooter(
       throw new Error('Data not found in the response');
     }
   } catch (error) {
-    console.error('get rent error:', error);
-    throw new Error('get rent error: ' + (error as Error).message);
+    console.error('Get scooter:', error);
+    throw new Error('Get scooter: ' + (error as Error).message);
   }
 }
 
+
+/**
+ * 
+ * @param {string} token - customer token
+ * @returns {GetScooterResponse}
+ */
+export async function getAllScooters(
+  token: string
+): Promise<GetScooterResponse> {
+  try {
+    const response = await fetch(`${ADDRESS}:1337/scooter`, {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Access-Token": token
+      },
+      method: "GET"
+    });
+    const result = await response.json();
+    if (result && result.data) {
+      return result.data;
+    } else {
+      //console.log('Data not found in the response');
+      throw new Error('Data not found in the response');
+    }
+  } catch (error) {
+    console.error('GetAll scooter:', error);
+    throw new Error('GetAll scooterr: ' + (error as Error).message);
+  }
+}
+
+/**
+ * 
+ * @param  {string} scooterId - scooters id token
+ * @returns {GetScooterToken}
+ */
 export async function getScooterToken(
   scooterId: string
 ): Promise<GetScooterToken> {
@@ -71,6 +111,13 @@ export async function getScooterToken(
   }
 }
 
+/**
+ * 
+ * @param {string} scooterId - scooters id
+ * @param {string} token - scooters tokrn
+ * @param {boolean} status - true or false for available attribute
+ * @returns {number}
+ */
 export async function putScooter(
   scooterId: string,
   token: string,

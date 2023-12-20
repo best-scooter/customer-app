@@ -50,7 +50,7 @@ const Rent = () => {
 
   /**
    *
-   * @param param0 {type, data} from QR/Bar code and other supported codes
+   * @param {BarcodeData} from QR/Bar code and other supported codes
    */
   const handleBarCodeScanned = async ({ type, data }: BarcodeData) => {
     setScanned(true);

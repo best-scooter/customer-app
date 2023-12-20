@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { Text, KeyboardAvoidingView, Platform } from 'react-native';
+import React, {useState, useEffect } from 'react';
+import { Text, KeyboardAvoidingView, Platform, TouchableOpacity  } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -19,6 +19,8 @@ import Map from './screens/Map';
 import Login from './screens/Login';
 import Register from './screens/Register';
 
+import { removeToken, retrieveToken } from './functions/SecureStore';
+
 const homeName = 'Home';
 const MapName = 'Map';
 const RentName = 'Rent';
@@ -27,7 +29,24 @@ const RegisterName = 'Register';
 
 const Tab = createBottomTabNavigator();
 
+
 export default function App() {
+
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  const handleLogout =  () => {
+    removeToken('jwtLogin')
+    console.log('Token removed and user logged out')
+    setIsLoggedIn(true)
+  }
+
+  const setLoginStatus = async () => {
+    await setIsLoggedIn(!isLoggedIn) //boolean switch
+  }
+
+  // Honestly logging out has currently no functionality in our system so im leaving it as is
+
   return (
     <FontLoader>
       <KeyboardAvoidingView
@@ -126,29 +145,59 @@ export default function App() {
                 )
               }}
             />
-            <Tab.Screen
-              name={LoginName}
-              component={Login}
-              options={{
-                tabBarIcon: ({ focused, size }) => (
-                  <>
-                    <FontAwesomeIcon
-                      icon={faUser}
-                      size={size}
-                      color={focused ? 'tomato' : 'grey'}
-                    />
-                    <Text
-                      style={{
-                        color: focused ? 'tomato' : 'grey',
-                        marginTop: 15
-                      }}
-                    >
-                      {LoginName}
-                    </Text>
-                  </>
-                )
-              }}
-            />
+            {isLoggedIn ? (
+              <Tab.Screen
+                name={LoginName}
+                component={Login}
+                options={{
+                  tabBarIcon: ({ focused, size }) => (
+                    <>
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        size={size}
+                        color={focused ? 'tomato' : 'grey'}
+                      />
+                      <Text
+                        style={{
+                          color: focused ? 'tomato' : 'grey',
+                          marginTop: 15,
+                        }}
+                      >
+                        {LoginName}
+                      </Text>
+                    </>
+                  ),
+                }}
+              >
+              </Tab.Screen>
+            ) : (
+            <React.Fragment>
+              <Tab.Screen
+                name={'Logout'}
+                component={() => null}
+                listeners={({ navigation }) => ({
+                  tabPress: (e) => {
+                    e.preventDefault(); // this is not a real screen it's a fake screen that serves like a button
+                    handleLogout(); // that simply logs the user out on click
+                  },
+                })}
+                options={{
+                  tabBarIcon: ({ focused, size }) => (
+                    <>
+                      <FontAwesomeIcon
+                        icon={faUser}
+                        size={size}
+                        color="grey"
+                      />
+                      <Text style={{ color: 'grey', marginTop: 15 }}>
+                        {LoginName}
+                      </Text>
+                    </>
+                  ),
+                }}
+              />
+            </React.Fragment>
+            )}
             <Tab.Screen
               name={RegisterName}
               component={Register}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ImageBackground } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { styles } from '../components/Styles';
 
@@ -18,7 +18,11 @@ const Register = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+    source={require('../assets/55.jpg')}
+    style={styles.background}
+  >
+    <View style={styles.container, styles.overlay}>
       <Text style={styles.headerContainerText}>Register</Text>
       <TextInput
         value={username}
@@ -61,6 +65,7 @@ const Register = () => {
         Register
       </PaperButton>
     </View>
+    </ImageBackground>
   );
 };
 

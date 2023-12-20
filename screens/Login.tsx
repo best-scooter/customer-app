@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ImageBackground } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../components/Styles';
@@ -14,7 +14,7 @@ import {
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
 
-const Login = () => {
+const Login = ( { setLoginStatus } ) => {
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
@@ -40,13 +40,18 @@ const Login = () => {
       console.log('All clear, your token is: ', jwt);
       //console.log('jwtdataoauth: ', jwt.data.token)
       storeToken('jwtLogin', jwt.data.token); //check up later
+      //setLoginStatus()
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+    source={require('../assets/55.jpg')}
+    style={styles.background}
+  >
+    <View style={styles.container, styles.overlay}>
       <Text style={styles.headerContainerText}>Sign In</Text>
       <TextInput
         value={username}
@@ -91,6 +96,7 @@ const Login = () => {
         Continue with GitHub
       </PaperButton>
     </View>
+    </ImageBackground>
   );
 };
 

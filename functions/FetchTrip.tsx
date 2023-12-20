@@ -32,8 +32,8 @@ type ApiResponse = {
 
 /**
  *
- * @param tripId string
- * @returns data of type
+ * @param {string} tripId
+ * @returns {GetTripReturn}
  */
 export async function getTrip(tripId: string): Promise<GetTripReturn> {
   try {
@@ -50,12 +50,19 @@ export async function getTrip(tripId: string): Promise<GetTripReturn> {
   }
 }
 
+/**
+ * Not done yet in progress
+ * @param {number} scooterId
+ * @param {number} customerId
+ * @param {number} scooterId 
+ * @returns {PostTripReturn}
+ */
 export async function postTrip(
   tripId: number = 0,
   customerId: number,
   scooterId: number
 ): Promise<PostTripReturn> {
-  const token = await retrieveToken('ScooterToken');
+  const token = await retrieveToken('ScooterToken'); // getting token here doesn't work fix it later
   try {
     const response = await fetch(`${ADDRESS}:1337/trip/${tripId}`, {
       headers: {
@@ -78,7 +85,12 @@ export async function postTrip(
   }
 }
 
-export async function putTrip(tripId: string): Promise<ApiResponse> {
+/**
+ * recheck later
+ * @param {string} tripId 
+ * @returns {Promise<any>}
+ */
+export async function putTrip(tripId: string): Promise<any> {
   const token = await retrieveToken('ScooterToken');
   const tripId2 = String(tripId);
   try {
