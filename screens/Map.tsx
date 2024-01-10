@@ -10,7 +10,7 @@ import { getScooter, getAllScooters } from '../functions/FetchScooter';
 export default function App() {
   const [mapZones, setMapZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
-  const [ScooterMarkers, setScooterMarkers] = useState([])
+  const [ScooterMarkers, setScooterMarkers] = useState([]);
   //const regionLat = 37.79;
   //const regionLng = -122.43;
   //const mapMarkers = generateMarkers(5, regionLat, regionLng, 0.1, -0.1); //0.1 -0.1 is the range between markers
@@ -23,14 +23,14 @@ export default function App() {
         const zones = zonesResponse.data;
 
         if (zones.length > 0) {
-          const mappedZones = zones.map(zone => ({
-            coordinates: zone.area.map(point => ({
+          const mappedZones = zones.map((zone) => ({
+            coordinates: zone.area.map((point) => ({
               latitude: point[0],
-              longitude: point[1],
+              longitude: point[1]
             })),
             type: zone.type,
             name: zone.name,
-            description: zone.description,
+            description: zone.description
           }));
           setMapZones(mappedZones);
         }
@@ -51,11 +51,14 @@ export default function App() {
         const token = await retrieveToken('jwtLogin');
         const allScooters = await getAllScooters(token);
         if (allScooters && allScooters.length > 0) {
-          console.log("All scooters retrieved succesfuly");
-          const availableScooters = allScooters.filter(item => item.available === true)
-          console.log("Available scooters: ", availableScooters)
-          const availableScootersMarkers = generateScooterMarkers(availableScooters)
-          setScooterMarkers(availableScootersMarkers)
+          console.log('All scooters retrieved succesfuly');
+          const availableScooters = allScooters.filter(
+            (item) => item.available === true
+          );
+          console.log('Available scooters: ', availableScooters);
+          const availableScootersMarkers =
+            generateScooterMarkers(availableScooters);
+          setScooterMarkers(availableScootersMarkers);
         }
       } catch (error) {
         console.error('Error fetching zones:', error);
@@ -86,7 +89,7 @@ export default function App() {
           longitudeDelta: 10
         }}
       >
-        {mapZones.map((zone: any, index:number) => (
+        {mapZones.map((zone: any, index: number) => (
           <React.Fragment key={index}>
             <Polygon
               coordinates={zone.coordinates}
@@ -113,9 +116,7 @@ export default function App() {
         {ScooterMarkers}
 
         {selectedZone && (
-          <Marker
-            coordinate={selectedZone.coordinates[0]}
-          >
+          <Marker coordinate={selectedZone.coordinates[0]}>
             <Callout>
               <View>
                 <Text>Name: {selectedZone.name}</Text>

@@ -1,6 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect } from 'react';
-import { Text, KeyboardAvoidingView, Platform, TouchableOpacity  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  Text,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -29,21 +34,18 @@ const RegisterName = 'Register';
 
 const Tab = createBottomTabNavigator();
 
-
 export default function App() {
-
-  
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-  const handleLogout =  () => {
-    removeToken('jwtLogin')
-    console.log('Token removed and user logged out')
-    setIsLoggedIn(true)
-  }
+  const handleLogout = () => {
+    removeToken('jwtLogin');
+    console.log('Token removed and user logged out');
+    setIsLoggedIn(true);
+  };
 
   const setLoginStatus = async () => {
-    await setIsLoggedIn(!isLoggedIn) //boolean switch
-  }
+    await setIsLoggedIn(!isLoggedIn); //boolean switch
+  };
 
   // Honestly logging out has currently no functionality in our system so im leaving it as is
 
@@ -160,43 +162,42 @@ export default function App() {
                       <Text
                         style={{
                           color: focused ? 'tomato' : 'grey',
-                          marginTop: 15,
+                          marginTop: 15
                         }}
                       >
                         {LoginName}
                       </Text>
                     </>
-                  ),
+                  )
                 }}
-              >
-              </Tab.Screen>
+              ></Tab.Screen>
             ) : (
-            <React.Fragment>
-              <Tab.Screen
-                name={'Logout'}
-                component={() => null}
-                listeners={({ navigation }) => ({
-                  tabPress: (e) => {
-                    e.preventDefault(); // this is not a real screen it's a fake screen that serves like a button
-                    handleLogout(); // that simply logs the user out on click
-                  },
-                })}
-                options={{
-                  tabBarIcon: ({ focused, size }) => (
-                    <>
-                      <FontAwesomeIcon
-                        icon={faUser}
-                        size={size}
-                        color="grey"
-                      />
-                      <Text style={{ color: 'grey', marginTop: 15 }}>
-                        {LoginName}
-                      </Text>
-                    </>
-                  ),
-                }}
-              />
-            </React.Fragment>
+              <React.Fragment>
+                <Tab.Screen
+                  name={'Logout'}
+                  component={() => null}
+                  listeners={({ navigation }) => ({
+                    tabPress: (e) => {
+                      e.preventDefault(); // this is not a real screen it's a fake screen that serves like a button
+                      handleLogout(); // that simply logs the user out on click
+                    }
+                  })}
+                  options={{
+                    tabBarIcon: ({ focused, size }) => (
+                      <>
+                        <FontAwesomeIcon
+                          icon={faUser}
+                          size={size}
+                          color="grey"
+                        />
+                        <Text style={{ color: 'grey', marginTop: 15 }}>
+                          {LoginName}
+                        </Text>
+                      </>
+                    )
+                  }}
+                />
+              </React.Fragment>
             )}
             <Tab.Screen
               name={RegisterName}

@@ -6,20 +6,20 @@ import { View, Text } from 'react-native';
 type ScooterInputType = {
   data: [
     {
-      id: number,
-      positionX: number,
-      positionY: number,
-      battery: number,
-      maxSpeed: number,
-      charging: boolean,
-      available: boolean,
-      decomissioned: boolean,
-      beingServiced: boolean,
-      disabled: boolean,
-      connected: boolean
-    },
-  ]
-}
+      id: number;
+      positionX: number;
+      positionY: number;
+      battery: number;
+      maxSpeed: number;
+      charging: boolean;
+      available: boolean;
+      decomissioned: boolean;
+      beingServiced: boolean;
+      disabled: boolean;
+      connected: boolean;
+    }
+  ];
+};
 
 export function generateMarkers(
   n: number,
@@ -53,11 +53,11 @@ export function placeMarkers(mapItems: object): JSX.Element[] {
 
 /**
  * I dont know the magic typescript words for this
- * @param takes an Array of json, with scooter data 
+ * @param takes an Array of json, with scooter data
  * @returns JSX.Element aka map markers
  */
 export function generateScooterMarkers(scootersData: ScooterInputType[]) {
-  return scootersData.map(scooter => (
+  return scootersData.map((scooter) => (
     <Marker
       key={scooter.id}
       coordinate={{ latitude: scooter.positionX, longitude: scooter.positionY }}

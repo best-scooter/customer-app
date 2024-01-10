@@ -25,15 +25,15 @@ type GetScooterToken = {
 };
 
 /**
- * 
- * @param {string} scooterId - scooters id 
+ *
+ * @param {string} scooterId - scooters id
  * @returns {GetScooterResponse}
  */
 export async function getScooter(
   scooterId: string
 ): Promise<GetScooterResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/scooter/${scooterId}`);
+    const response = await fetch(`${ADDRESS}:1337/v1/scooter/${scooterId}`);
     const result = await response.json();
     if (result && result.data) {
       return result.data;
@@ -47,9 +47,8 @@ export async function getScooter(
   }
 }
 
-
 /**
- * 
+ *
  * @param {string} token - customer token
  * @returns {GetScooterResponse}
  */
@@ -57,12 +56,12 @@ export async function getAllScooters(
   token: string
 ): Promise<GetScooterResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/scooter`, {
+    const response = await fetch(`${ADDRESS}:1337/v1/scooter`, {
       headers: {
-        "Content-Type": "application/json",
-        "X-Access-Token": token
+        'Content-Type': 'application/json',
+        'X-Access-Token': token
       },
-      method: "GET"
+      method: 'GET'
     });
     const result = await response.json();
     if (result && result.data) {
@@ -78,7 +77,7 @@ export async function getAllScooters(
 }
 
 /**
- * 
+ *
  * @param  {string} scooterId - scooters id token
  * @returns {GetScooterToken}
  */
@@ -90,7 +89,7 @@ export async function getScooterToken(
   const pass = String(scootId);
 
   try {
-    const response = await fetch(`${ADDRESS}:1337/scooter/token`, {
+    const response = await fetch(`${ADDRESS}:1337/v1/scooter/token`, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -112,7 +111,7 @@ export async function getScooterToken(
 }
 
 /**
- * 
+ *
  * @param {string} scooterId - scooters id
  * @param {string} token - scooters tokrn
  * @param {boolean} status - true or false for available attribute
@@ -126,7 +125,7 @@ export async function putScooter(
   //const token = await retrieveToken("ScooterToken")
   const scooterId2 = String(scooterId);
   try {
-    const response = await fetch(`${ADDRESS}:1337/scooter/${scooterId2}`, {
+    const response = await fetch(`${ADDRESS}:1337/v1/scooter/${scooterId2}`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token

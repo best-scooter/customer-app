@@ -11,9 +11,10 @@ type PostTokenResponse = {
 };
 
 export async function getOAUTH(): Promise<string[]> {
+  console.log(ADDRESS);
   try {
     const response = await fetch(
-      `${ADDRESS}:1337/customer/auth?redirectUrl=exp://192.168.0.10:8081&mobile=true`
+      `${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://192.168.0.10:8888`
     );
     const result = await response.json();
 
@@ -44,18 +45,18 @@ export async function redirectOAuth(
     const url = result.url; //lint err, not actual error..
     const code = extractCodeFromUrl(url);
 
-    //console.log('Code:', code);
+    console.log('Code:', code);
 
     return [code, state];
   } catch (error) {
     console.error('OAuth error:', error);
-    throw new Error('Error during OAuth: ' + (error as Error).message);
+    throw new Error('Error during redirect OAuth: ' + (error as Error).message);
   }
 }
 
 export async function postOAUTH(code: string, state: string): Promise<string> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/customer/auth?mobile=true`, {
+    const response = await fetch(`${ADDRESS}:1337/v1/customer/auth`, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -71,7 +72,7 @@ export async function postOAUTH(code: string, state: string): Promise<string> {
     }
   } catch (error) {
     console.error('OAuth error:', error);
-    throw new Error('Error during OAuth: ' + (error as Error).message);
+    throw new Error('Error during post OAuth: ' + (error as Error).message);
   }
 }
 
@@ -80,7 +81,7 @@ export async function postToken(
   email: string = 'standard.gmail.com'
 ): Promise<PostTokenResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/customer/token`, {
+    const response = await fetch(`${ADDRESS}:1337/v1/customer/token`, {
       headers: {
         'Content-Type': 'application/json'
       },

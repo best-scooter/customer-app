@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
  * @param tokenName key
  * @param token value
  */
-export async function storeToken(tokenName: string, token: string) {
+export async function storeToken(tokenName: string, token: any) {
   try {
     //console.log('token received was: ', token)
     await SecureStore.setItemAsync(tokenName, token);

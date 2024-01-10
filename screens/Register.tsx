@@ -19,52 +19,52 @@ const Register = () => {
 
   return (
     <ImageBackground
-    source={require('../assets/55.jpg')}
-    style={styles.background}
-  >
-    <View style={styles.container, styles.overlay}>
-      <Text style={styles.headerContainerText}>Register</Text>
-      <TextInput
-        value={username}
-        onChangeText={setUsername}
-        label="User name"
-        secureTextEntry={true}
-        style={styles.input}
-        left={<TextInput.Icon icon="account" />}
-      />
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        label="Email"
-        style={styles.input}
-        left={<TextInput.Icon icon="email" />}
-      />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        label="Password"
-        secureTextEntry={true}
-        style={styles.input}
-        left={<TextInput.Icon icon="lock" />}
-      />
-      <TextInput
-        value={password2}
-        onChangeText={setPassword2}
-        label="Confirm password"
-        secureTextEntry={true}
-        style={styles.input}
-        left={<TextInput.Icon icon="lock" />}
-      />
+      source={require('../assets/55.jpg')}
+      style={styles.background}
+    >
+      <View style={(styles.container, styles.overlay)}>
+        <Text style={styles.headerContainerText}>Register</Text>
+        <TextInput
+          value={username}
+          onChangeText={setUsername}
+          label="User name"
+          secureTextEntry={true}
+          style={styles.input}
+          left={<TextInput.Icon icon="account" />}
+        />
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          label="Email"
+          style={styles.input}
+          left={<TextInput.Icon icon="email" />}
+        />
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          label="Password"
+          secureTextEntry={true}
+          style={styles.input}
+          left={<TextInput.Icon icon="lock" />}
+        />
+        <TextInput
+          value={password2}
+          onChangeText={setPassword2}
+          label="Confirm password"
+          secureTextEntry={true}
+          style={styles.input}
+          left={<TextInput.Icon icon="lock" />}
+        />
 
-      <PaperButton
-        mode="contained"
-        onPress={handleRegister}
-        style={styles.button}
-        labelStyle={styles.buttonText}
-      >
-        Register
-      </PaperButton>
-    </View>
+        <PaperButton
+          mode="contained"
+          onPress={handleRegister}
+          style={styles.button}
+          labelStyle={styles.buttonText}
+        >
+          Register
+        </PaperButton>
+      </View>
     </ImageBackground>
   );
 };

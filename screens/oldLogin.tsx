@@ -14,7 +14,7 @@ import {
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
 
-const Login = ({ setLoginStatus }) => {
+const oldLogin = ({ setLoginStatus }) => {
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
@@ -42,6 +42,7 @@ const Login = ({ setLoginStatus }) => {
   };
 
   const handleLogout = async () => {
+    // Clear the token on logout
     await removeToken('jwtLogin');
     setLoggedIn(false);
   };
@@ -133,4 +134,4 @@ const Login = ({ setLoginStatus }) => {
   );
 };
 
-export default Login;
+export default oldLogin;
