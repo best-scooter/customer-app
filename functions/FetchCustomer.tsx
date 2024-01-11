@@ -77,3 +77,28 @@ export async function getCustomer(
     throw new Error('error getting customer: ' + (error as Error).message);
   }
 }
+
+export async function postCustomerToken(
+  emailBody: string,
+): Promise<getCustomerResponse> {
+  try {
+    const response = await fetch(`${ADDRESS}:1337/v1/customer/token`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        email: emailBody
+      })
+    });
+    const result = await response.json();
+    if (result && result.data) {
+      return result;
+    } else {
+      throw new Error(' customer post data not found in the response');
+    }
+  } catch (error) {
+    console.error('error posting customer token');
+    throw new Error('error posting customer token: ' + (error as Error).message);
+  }
+}

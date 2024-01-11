@@ -26,6 +26,8 @@ import {
   storeToken
 } from '../functions/SecureStore';
 import { getCustomer, updateCustomerBalance } from '../functions/FetchCustomer';
+import { getZoneById } from '../functions/FetchZones';
+import { getParkingByScooter, postParkingByScooter } from '../functions/FetchParking';
 
 const Rent = () => {
   const navigation = useNavigation();
@@ -38,6 +40,8 @@ const Rent = () => {
   const [isRenting, setisRenting] = useState(false);
   const [scooterId, setScooterId] = useState('');
   const [tokenAuthed, setTokenAuthed] = useState(null);
+  const [scooterStart, setScooterStart] = useState([]);
+
 
   useEffect(() => {
     // Fetch the token asynchronously
@@ -126,6 +130,8 @@ const Rent = () => {
       console.log('scooterData: ', scooterData);
       const scooterPos = [scooterData.positionY, scooterData.positionX];
       console.log('scooter pos : ', scooterPos);
+      setScooterStart(scooterPos)
+      console.log('scooter pos is set in state :' , scooterStart)
 
       const storedToken = await retrieveToken('jwtLogin');
       console.log('Stored Token:', storedToken);
@@ -156,27 +162,62 @@ const Rent = () => {
 
   const returnScooter = async () => {
     const storedToken = await retrieveToken('jwtLogin');
-    console.log('Stored Token:', storedToken);
-    console.log('data in returnScooter as: ', scooterId);
+    //console.log('Stored Token:', storedToken);
+    //console.log('data in returnScooter as: ', scooterId);
 
     // wow...
     const token = String(storedToken).trim();
-    // get bike customer
-    // get scooter location for cost
-    // send request to scooterapp to get the final cost
-    // withdraw money
-    // end scooter rental
-    setisRenting(false); // disable button from view
-    setUseManualInput(false);
-    removeToken('ScooterToken'); // remove the scooters token from storage
-    const scooterData = await getScooter(scooterId);
-    console.log('scooterData: ', scooterData);
-    const scooterPos = [scooterData.positionY, scooterData.positionX];
-    console.log('scooter pos end: ', scooterPos);
-    const tripId = await retrieveToken('tripId');
-    console.log('trip id is in return  : ', tripId);
 
-    await putTrip(tripId, token);
+
+    const allParkingsByScooter = await getParkingByScooter(token, scooterId)
+
+    let initialZoneValue = 15
+    console.log('len of park: ', allParkingsByScooter.data.length)
+    if (allParkingsByScooter.data && allParkingsByScooter.data.length > 0) {
+      const lastParking = allParkingsByScooter.data[allParkingsByScooter.data.length - 1];
+      console.log('lastParking: ' , lastParking)
+  
+      const lastKnownParkingZone = lastParking.zoneId
+  
+      const zoneData = await getZoneById(token, lastKnownParkingZone) // Fixa zone id på något jäkla sätt
+      //console.log('zoneData : ', zoneData)
+      initialZoneValue = parseInt(zoneData.data.parkingValue)
+      console.log('Initial zone value is : ', initialZoneValue)
+    } else {
+      console.log('else triggered meaning data length is 0')
+      initialZoneValue = 15
+    }
+    console.log('out of loop init zone value :', initialZoneValue)
+
+
+    setisRenting(false); // tar väck knappen
+    setUseManualInput(false);
+    removeToken('ScooterToken');
+    const scooterData = await getScooter(scooterId);
+    //console.log('scooterData: ', scooterData);
+    const scooterEndPos = [scooterData.positionY, scooterData.positionX];
+    //console.log('scooter pos end: ', scooterEndPos);
+    const tripId = await retrieveToken('tripId');
+    //console.log('trip id is in return  : ', tripId);
+
+    console.log('here')
+    console.log(scooterEndPos)
+
+    const finalZoneValue = await postParkingByScooter(token, scooterId, scooterEndPos)
+    console.log('final zone value with zone ids: ', finalZoneValue)
+    const zoneData = await getZoneById(token, finalZoneValue.zoneIds) // Fixa zone id på något jäkla sätt
+    console.log('last zone dataaaa: ', zoneData)
+    const finalZoneValueNum = zoneData.data.parkingValue
+    console.log('final zone parking value is :', finalZoneValueNum)
+    console.log('final zone parking value is :', typeof finalZoneValueNum)
+
+
+    const pickUpCostBasedByZones = initialZoneValue - finalZoneValueNum
+    console.log('pick up cost by zones is : ', pickUpCostBasedByZones)
+
+    //console.log('is 0 - 0 Nan?', (0 - 0))
+
+    await putTrip(tripId, token, scooterStart);
 
     const tripData = await getTrip(tripId);
     console.log('tripdata is: ', tripData);
@@ -186,8 +227,6 @@ const Rent = () => {
     const startedTime = new Date(timeStarted);
     const endedTime = new Date(timeEnded);
     const timeDifferenceMs = endedTime - startedTime;
-
-    // convert the time diff from ms to hours
     const timeDurationInHours = timeDifferenceMs / (1000 * 60 * 60);
     console.log('time duration :', timeDurationInHours);
 
@@ -197,7 +236,13 @@ const Rent = () => {
 
     const totalCost = initialPrice + distanceCost + timeCost;
 
+    const totalCostAfterZoneConsiderations = totalCost - pickUpCostBasedByZones
+
+    console.log("pickUpCostBasedByZones", pickUpCostBasedByZones)
+
     console.log('Total Cost:', totalCost);
+    console.log('totalCostAfterZoneConsiderations:', totalCostAfterZoneConsiderations);
+
     const customerId = await retrieveToken('customerId');
     const customerData = await getCustomer(customerId, token);
     console.log('customerdata is here: ', customerData);

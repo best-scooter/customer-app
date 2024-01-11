@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MapView, { Polygon, Marker, Callout } from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
 import { generateMarkers, generateScooterMarkers } from '../functions/Markers';
@@ -11,9 +11,24 @@ export default function App() {
   const [mapZones, setMapZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
   const [ScooterMarkers, setScooterMarkers] = useState([]);
-  //const regionLat = 37.79;
-  //const regionLng = -122.43;
-  //const mapMarkers = generateMarkers(5, regionLat, regionLng, 0.1, -0.1); //0.1 -0.1 is the range between markers
+  const [Scooters, setScooters] = useState([])
+
+  const socketRef = useRef(null)
+
+  useEffect(() => {
+    console.log('rent is loading in');
+    const retrieveTokenAsync = async () => {
+      const token = await retrieveToken('jwtLogin');
+
+      if (!token) {
+        console.log('no token redirecting');
+        // @ts-ignore
+        navigation.navigate('Login');
+      }
+    };
+
+    retrieveTokenAsync();
+  }, []);
 
   useEffect(() => {
     const handleGetZones = async () => {
@@ -42,31 +57,83 @@ export default function App() {
     handleGetZones();
   }, []);
 
-  useEffect(() => {
-    /**
-     * gets all AVAILABLE scooters
-     */
-    const handleGetScooters = async () => {
-      try {
-        const token = await retrieveToken('jwtLogin');
-        const allScooters = await getAllScooters(token);
-        if (allScooters && allScooters.length > 0) {
-          console.log('All scooters retrieved succesfuly');
-          const availableScooters = allScooters.filter(
-            (item) => item.available === true
-          );
-          console.log('Available scooters: ', availableScooters);
-          const availableScootersMarkers =
-            generateScooterMarkers(availableScooters);
-          setScooterMarkers(availableScootersMarkers);
-        }
-      } catch (error) {
-        console.error('Error fetching zones:', error);
-      }
-    };
 
-    handleGetScooters();
-  }, []);
+
+  useEffect(() => {
+
+    const getWebSocketScooters = async () => {
+      const storedToken = await retrieveToken('jwtLogin');
+
+      const token = String(storedToken).trim();
+      console.log(token)
+      socketRef.current = new WebSocket('ws://192.168.0.10:8081', token)
+  
+      socketRef.current.onmessage = (event) => {
+        const receivedData = JSON.parse(event.data)
+  
+        const evalInvalidPosition =
+          receivedData['positionX'] === undefined ||
+          receivedData['positionY'] === undefined
+        console.log(evalInvalidPosition)
+  
+        if (evalInvalidPosition) {
+          return
+        }
+        console.log('Received:', event.data)
+  
+        setScooters((prevScooters) => {
+          const scooterIndex = prevScooters.findIndex(
+            (scooter) => scooter.scooterId === receivedData.scooterId,
+          )
+  
+          if (scooterIndex !== -1) {
+            return prevScooters.map((scooter, index) =>
+              index === scooterIndex
+                ? {
+                    ...scooter,
+                    positionX: receivedData.positionX,
+                    positionY: receivedData.positionY,
+                  }
+                : scooter,
+            )
+          } else {
+            return [
+              ...prevScooters,
+              {
+                scooterId: receivedData.scooterId,
+                positionX: receivedData.positionX,
+                positionY: receivedData.positionY,
+              },
+            ]
+          }
+        })
+      }
+  
+      socketRef.current.onerror = (error) => {
+        console.error('WebSocket Error:', error)
+      }
+  
+      socketRef.current.onopen = () => {
+        console.log('WebSocket Connected')
+        const data = {
+          message: 'subscribe',
+          subscriptions: ['scooterLimited'],
+        }
+        socketRef.current.send(JSON.stringify(data))
+      }
+  
+      socketRef.current.onclose = () => {
+        console.log('WebSocket Connection Closed')
+      }
+  
+      return () => {
+        console.log('Cleaning up WebSocket Connection')
+        socketRef.current.close()
+      }
+    }
+    getWebSocketScooters()
+    
+  }, [])
 
   const styles = StyleSheet.create({
     container: {
@@ -114,6 +181,23 @@ export default function App() {
         ))}
 
         {ScooterMarkers}
+        {Scooters.map((scooter, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: scooter.positionY,
+              longitude: scooter.positionX,
+            }}
+          >
+            {/* You can customize the marker content as needed */}
+            <Callout>
+              <View>
+                <Text>Scooter ID: {scooter.scooterId}</Text>
+                {/* Add more details as needed */}
+              </View>
+            </Callout>
+          </Marker>
+        ))}
 
         {selectedZone && (
           <Marker coordinate={selectedZone.coordinates[0]}>

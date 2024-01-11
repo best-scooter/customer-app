@@ -199,29 +199,6 @@ export default function App() {
                 />
               </React.Fragment>
             )}
-            <Tab.Screen
-              name={RegisterName}
-              component={Register}
-              options={{
-                tabBarIcon: ({ focused, size }) => (
-                  <>
-                    <FontAwesomeIcon
-                      icon={faCog}
-                      size={size}
-                      color={focused ? 'tomato' : 'grey'}
-                    />
-                    <Text
-                      style={{
-                        color: focused ? 'tomato' : 'grey',
-                        marginTop: 15
-                      }}
-                    >
-                      {RegisterName}
-                    </Text>
-                  </>
-                )
-              }}
-            />
           </Tab.Navigator>
           <StatusBar style="auto" />
         </NavigationContainer>

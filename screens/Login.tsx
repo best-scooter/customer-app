@@ -11,6 +11,8 @@ import {
   postToken
 } from '../functions/FetchOAuth';
 
+import { postCustomerToken } from '../functions/FetchCustomer';
+
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
 
@@ -21,12 +23,23 @@ const Login = ({ setLoginStatus }) => {
   const [password, setPassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log('Username:', username);
     console.log('Password:', password);
-    // Fetch stuff
+  
+    try {
+      const response = await postCustomerToken(username);
+      console.log('res', response);
+  
+      storeToken('jwtLogin', response.data.token);
+      storeToken('customerId', response.data.customerId.toString());
+  
+      console.log('heyay login worked data is:', response.data);
+      setLoggedIn(true)
+    } catch (error) {
+      console.error('Error during login:', error);
+    }
   };
-
   useEffect(() => {
     const checkLoginStatus = async () => {
       const token = await retrieveToken('jwtLogin');
@@ -58,6 +71,7 @@ const Login = ({ setLoginStatus }) => {
       storeToken('jwtLogin', jwt.data.token); //check up later
       storeToken('customerId', jwt.data.customerId.toString());
       //setLoginStatus()
+      setLoggedIn(true)
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
@@ -107,14 +121,6 @@ const Login = ({ setLoginStatus }) => {
               labelStyle={styles.buttonText}
             >
               Login
-            </PaperButton>
-            <PaperButton
-              mode="contained"
-              style={styles.buttonSecondary}
-              labelStyle={styles.buttonTextSecondary}
-              onPress={handleRedirect}
-            >
-              Register
             </PaperButton>
             <Text style={{ marginVertical: 10 }}>Or</Text>
             <PaperButton
