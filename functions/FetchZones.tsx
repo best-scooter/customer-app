@@ -23,7 +23,7 @@ type GetZonesReturn = {
 export async function getZones(customerToken: string): Promise<GetZonesReturn> {
   //const customerToken = retrieveToken('jwtLogin')
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/zone`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/zone`, {
       headers: {
         'Content-Type': 'Application/json',
         'X-Access-Token': customerToken
@@ -45,7 +45,7 @@ export async function getZones(customerToken: string): Promise<GetZonesReturn> {
 export async function getZoneById(customerToken: string, zoneId: any): Promise<GetZonesReturn> {
   //const customerToken = retrieveToken('jwtLogin')
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/zone/${zoneId}`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/zone/${zoneId}`, {
       headers: {
         'Content-Type': 'Application/json',
         'X-Access-Token': customerToken

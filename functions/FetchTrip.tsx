@@ -37,7 +37,7 @@ type ApiResponse = {
  */
 export async function getTrip(tripId: string): Promise<GetTripReturn> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/trip/${tripId}`);
+    const response = await fetch(`http://${ADDRESS}:1337/v1/trip/${tripId}`);
     const result = await response.json();
     if (result && result.data) {
       return result;
@@ -74,7 +74,7 @@ export async function postTrip(
   console.log('tripstring: ', tripString);
   console.log('add: ', ADDRESS);
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/trip/0`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/trip/0`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -115,7 +115,7 @@ export async function putTrip(tripId: string, token): Promise<any> {
   const currentDate = new Date().toISOString();
   console.log('current date: ', currentDate);
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/trip/${tripId2}`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/trip/${tripId2}`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token

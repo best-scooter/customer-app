@@ -7,6 +7,8 @@ import { getZones } from '../functions/FetchZones';
 import { retrieveToken } from '../functions/SecureStore';
 import { getScooter, getAllScooters } from '../functions/FetchScooter';
 
+const ADDRESS = process.env.DEV_ADDRESS
+
 export default function App() {
   const [mapZones, setMapZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
@@ -66,21 +68,39 @@ export default function App() {
 
       const token = String(storedToken).trim();
       console.log(token)
-      socketRef.current = new WebSocket('ws://192.168.0.10:8081', token)
+      socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token)
   
       socketRef.current.onmessage = (event) => {
         const receivedData = JSON.parse(event.data)
-  
+        console.log('Received:', event.data)
+
+        if (receivedData['remove'] === true) {
+          setScooters((prevScooters) => {
+            return prevScooters.filter(
+              (scooter) => scooter.scooterId !== receivedData.scooterId
+            );
+          });
+          return;
+          // setScooters((prevScooters) => {
+          //   const scooterIndex = prevScooters.findIndex(
+          //     (scooter) => scooter.scooterId === receivedData.scooterId,
+          //   )
+
+          //   if (scooterIndex !== -1) {
+          //     prevScooters[scooterIndex] = undefined
+          //   }
+          // })
+          // return
+        }
+
         const evalInvalidPosition =
           receivedData['positionX'] === undefined ||
           receivedData['positionY'] === undefined
-        console.log(evalInvalidPosition)
-  
+
         if (evalInvalidPosition) {
           return
         }
-        console.log('Received:', event.data)
-  
+
         setScooters((prevScooters) => {
           const scooterIndex = prevScooters.findIndex(
             (scooter) => scooter.scooterId === receivedData.scooterId,
