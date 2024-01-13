@@ -208,6 +208,7 @@ export default function App() {
               latitude: scooter.positionY,
               longitude: scooter.positionX,
             }}
+            image={require('../assets/scooter-icon.png')}
           >
             {/* You can customize the marker content as needed */}
             <Callout>
