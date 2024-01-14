@@ -7,6 +7,8 @@ import { getZones } from '../functions/FetchZones';
 import { retrieveToken } from '../functions/SecureStore';
 import { getScooter, getAllScooters } from '../functions/FetchScooter';
 
+const ADDRESS = process.env.DEV_ADDRESS
+
 export default function App() {
   const [mapZones, setMapZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
@@ -31,18 +33,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    const retrieveTokenAsync = async () => {
-      const token2 = await retrieveToken('jwtLogin');
-
-      if (!token2) {
-        console.log('no token redirecting');
-        // @ts-ignore
-        navigation.navigate('Login');
-      }
-    };
-
-    retrieveTokenAsync();
-    
     const handleGetZones = async () => {
       try {
         const token = await retrieveToken('jwtLogin');
@@ -77,24 +67,12 @@ export default function App() {
       const storedToken = await retrieveToken('jwtLogin');
 
       const token = String(storedToken).trim();
-
-      const retrieveTokenAsync = async () => {
-        const token2 = await retrieveToken('jwtLogin');
-  
-        if (!token2) {
-          console.log('no token redirecting');
-          // @ts-ignore
-          navigation.navigate('Login');
-        }
-      };
-  
-      retrieveTokenAsync();
       console.log(token)
-      socketRef.current = new WebSocket('ws://192.168.0.10:8081', token)
+      socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token)
   
       socketRef.current.onmessage = (event) => {
         const receivedData = JSON.parse(event.data)
-
+        console.log('Received:', event.data)
 
         if (receivedData['remove'] === true) {
           setScooters((prevScooters) => {
@@ -103,23 +81,31 @@ export default function App() {
             );
           });
           return;
+          // setScooters((prevScooters) => {
+          //   const scooterIndex = prevScooters.findIndex(
+          //     (scooter) => scooter.scooterId === receivedData.scooterId,
+          //   )
+
+          //   if (scooterIndex !== -1) {
+          //     prevScooters[scooterIndex] = undefined
+          //   }
+          // })
+          // return
         }
-  
+
         const evalInvalidPosition =
           receivedData['positionX'] === undefined ||
           receivedData['positionY'] === undefined
-        console.log(evalInvalidPosition)
-  
+
         if (evalInvalidPosition) {
           return
         }
-        console.log('Received:', event.data)
-  
+
         setScooters((prevScooters) => {
           const scooterIndex = prevScooters.findIndex(
             (scooter) => scooter.scooterId === receivedData.scooterId,
           )
-
+  
           if (scooterIndex !== -1) {
             return prevScooters.map((scooter, index) =>
               index === scooterIndex
@@ -222,6 +208,7 @@ export default function App() {
               latitude: scooter.positionY,
               longitude: scooter.positionX,
             }}
+            image={require('../assets/scooter-icon.png')}
           >
             {/* You can customize the marker content as needed */}
             <Callout>
