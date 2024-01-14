@@ -110,7 +110,7 @@ export async function postTrip(
  * @param {string} tripId
  * @returns {Promise<any>}
  */
-export async function putTrip(tripId: string, token): Promise<any> {
+export async function putTrip(tripId: string, token: string): Promise<any> {
   const tripId2 = String(tripId);
   const currentDate = new Date().toISOString();
   console.log('current date: ', currentDate);

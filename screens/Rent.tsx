@@ -34,7 +34,6 @@ const Rent = () => {
   const [showCamera, setShowCamera] = useState(false);
   const [isRenting, setisRenting] = useState(false);
   const [scooterId, setScooterId] = useState('');
-  const [tokenAuthed, setTokenAuthed] = useState(null);
   const [scooterStart, setScooterStart] = useState([]);
 
   useFocusEffect(
