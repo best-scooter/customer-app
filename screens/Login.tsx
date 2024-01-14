@@ -12,11 +12,8 @@ import {
 } from '../functions/FetchOAuth';
 
 import { postCustomerToken } from '../functions/FetchCustomer';
-import * as WebBrowser from 'expo-web-browser';
-import { Linking } from 'react-native';
-
 import { storeToken } from '../functions/SecureStore';
-//import * as Network from 'expo-network';
+const ADDRESS = process.env.DEV_ADDRESS;
 
 const Login = ({ setLoginStatus }) => {
   const navigation = useNavigation();
@@ -28,16 +25,17 @@ const Login = ({ setLoginStatus }) => {
   const handleLogin = async () => {
     console.log('Username:', username);
     console.log('Password:', password);
-  
+    console.log(ADDRESS);
+
     try {
       const response = await postCustomerToken(username);
       console.log('res', response);
-  
+
       storeToken('jwtLogin', response.data.token);
       storeToken('customerId', response.data.customerId.toString());
-  
+
       console.log('heyay login worked data is:', response.data);
-      setLoggedIn(true)
+      setLoggedIn(true);
     } catch (error) {
       console.error('Error during login:', error);
     }
@@ -73,7 +71,7 @@ const Login = ({ setLoginStatus }) => {
       storeToken('jwtLogin', jwt.data.token); //check up later
       storeToken('customerId', jwt.data.customerId.toString());
       //setLoginStatus()
-      setLoggedIn(true)
+      setLoggedIn(true);
     } catch (error) {
       console.error('Error in allInOne:', error);
     }
@@ -107,14 +105,14 @@ const Login = ({ setLoginStatus }) => {
               style={styles.input}
               left={<TextInput.Icon icon="email" />}
             />
-            <TextInput
+            {/* <TextInput
               value={password}
               onChangeText={setPassword}
               label="Password"
               secureTextEntry={true}
               style={styles.input}
               left={<TextInput.Icon icon="lock" />}
-            />
+            /> */}
 
             <PaperButton
               mode="contained"
@@ -132,7 +130,7 @@ const Login = ({ setLoginStatus }) => {
             >
               Register 
             </PaperButton>*/}
-            <Text style={{ marginVertical: 10 }}>Or</Text>
+
             <PaperButton
               mode="contained"
               style={styles.buttonGoogle}

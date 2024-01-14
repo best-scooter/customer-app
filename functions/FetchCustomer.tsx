@@ -1,5 +1,5 @@
 const ADDRESS = process.env.DEV_ADDRESS;
-console.log("local address:", ADDRESS)
+console.log('local address:', ADDRESS);
 
 /**
  * Update customer's balance by deducting a specified amount
@@ -18,14 +18,17 @@ export async function updateCustomerBalance(
   const updatedBalance = currentBalance - amountToDeduct;
 
   try {
-    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/${customerId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Access-Token': token
-      },
-      method: 'PUT',
-      body: JSON.stringify({ balance: updatedBalance })
-    });
+    const response = await fetch(
+      `http://${ADDRESS}:1337/v1/customer/${customerId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Access-Token': token
+        },
+        method: 'PUT',
+        body: JSON.stringify({ balance: updatedBalance })
+      }
+    );
 
     if (response.status === 204) {
       // Successful "No Content" response
@@ -38,7 +41,7 @@ export async function updateCustomerBalance(
   } catch (error) {
     console.error('Put customer error:', error);
     throw new Error('Put customer error: ' + (error as Error).message);
-}
+  }
 }
 
 type getCustomerResponse = {
@@ -60,13 +63,16 @@ export async function getCustomer(
   token: string
 ): Promise<getCustomerResponse> {
   try {
-    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/${customerId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Access-Token': token
-      },
-      method: 'GET'
-    });
+    const response = await fetch(
+      `http://${ADDRESS}:1337/v1/customer/${customerId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Access-Token': token
+        },
+        method: 'GET'
+      }
+    );
     const result = await response.json();
     if (result && result.data) {
       return result.data;
@@ -80,13 +86,13 @@ export async function getCustomer(
 }
 
 export async function postCustomerToken(
-  emailBody: string,
+  emailBody: string
 ): Promise<getCustomerResponse> {
   try {
     const response = await fetch(`http://${ADDRESS}:1337/v1/customer/token`, {
-    // const response = await fetch(`http://192.168.0.108:1337/v1/customer/token`, {
+      // const response = await fetch(`http://192.168.0.108:1337/v1/customer/token`, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       method: 'POST',
       body: JSON.stringify({
@@ -101,6 +107,8 @@ export async function postCustomerToken(
     }
   } catch (error) {
     console.error('error posting customer token');
-    throw new Error('error posting customer token: ' + (error as Error).message);
+    throw new Error(
+      'error posting customer token: ' + (error as Error).message
+    );
   }
 }

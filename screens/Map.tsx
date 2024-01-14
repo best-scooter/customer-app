@@ -1,36 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MapView, { Polygon, Marker, Callout } from 'react-native-maps';
 import { StyleSheet, View, Text } from 'react-native';
-import { generateMarkers, generateScooterMarkers } from '../functions/Markers';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import { getZones } from '../functions/FetchZones';
 import { retrieveToken } from '../functions/SecureStore';
-import { getScooter, getAllScooters } from '../functions/FetchScooter';
 
-const ADDRESS = process.env.DEV_ADDRESS
+const ADDRESS = process.env.DEV_ADDRESS;
 
 export default function App() {
   const [mapZones, setMapZones] = useState([]);
   const [selectedZone, setSelectedZone] = useState(null);
   const [ScooterMarkers, setScooterMarkers] = useState([]);
-  const [Scooters, setScooters] = useState([])
+  const [Scooters, setScooters] = useState([]);
+  const navigation = useNavigation();
 
-  const socketRef = useRef(null)
+  const socketRef = useRef(null);
 
-  useEffect(() => {
-    console.log('rent is loading in');
-    const retrieveTokenAsync = async () => {
-      const token = await retrieveToken('jwtLogin');
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log('Screen is focused');
+      const retrieveTokenAsync = async () => {
+        const token = await retrieveToken('jwtLogin');
 
-      if (!token) {
-        console.log('no token redirecting');
-        // @ts-ignore
-        navigation.navigate('Login');
-      }
-    };
+        if (!token) {
+          console.log('No token, redirecting to login');
+          // @ts-ignore
+          navigation.navigate('Sign In');
+        }
+      };
 
-    retrieveTokenAsync();
-  }, []);
+      retrieveTokenAsync();
+    }, [navigation])
+  );
 
   useEffect(() => {
     const handleGetZones = async () => {
@@ -59,20 +61,17 @@ export default function App() {
     handleGetZones();
   }, []);
 
-
-
   useEffect(() => {
-
     const getWebSocketScooters = async () => {
       const storedToken = await retrieveToken('jwtLogin');
 
       const token = String(storedToken).trim();
-      console.log(token)
-      socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token)
-  
+      console.log(token);
+      socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token);
+
       socketRef.current.onmessage = (event) => {
-        const receivedData = JSON.parse(event.data)
-        console.log('Received:', event.data)
+        const receivedData = JSON.parse(event.data);
+        console.log('Received:', event.data);
 
         if (receivedData['remove'] === true) {
           setScooters((prevScooters) => {
@@ -95,65 +94,64 @@ export default function App() {
 
         const evalInvalidPosition =
           receivedData['positionX'] === undefined ||
-          receivedData['positionY'] === undefined
+          receivedData['positionY'] === undefined;
 
         if (evalInvalidPosition) {
-          return
+          return;
         }
 
         setScooters((prevScooters) => {
           const scooterIndex = prevScooters.findIndex(
-            (scooter) => scooter.scooterId === receivedData.scooterId,
-          )
-  
+            (scooter) => scooter.scooterId === receivedData.scooterId
+          );
+
           if (scooterIndex !== -1) {
             return prevScooters.map((scooter, index) =>
               index === scooterIndex
                 ? {
                     ...scooter,
                     positionX: receivedData.positionX,
-                    positionY: receivedData.positionY,
+                    positionY: receivedData.positionY
                   }
-                : scooter,
-            )
+                : scooter
+            );
           } else {
             return [
               ...prevScooters,
               {
                 scooterId: receivedData.scooterId,
                 positionX: receivedData.positionX,
-                positionY: receivedData.positionY,
-              },
-            ]
+                positionY: receivedData.positionY
+              }
+            ];
           }
-        })
-      }
-  
+        });
+      };
+
       socketRef.current.onerror = (error) => {
-        console.error('WebSocket Error:', error)
-      }
-  
+        console.error('WebSocket Error:', error);
+      };
+
       socketRef.current.onopen = () => {
-        console.log('WebSocket Connected')
+        console.log('WebSocket Connected');
         const data = {
           message: 'subscribe',
-          subscriptions: ['scooterLimited'],
-        }
-        socketRef.current.send(JSON.stringify(data))
-      }
-  
+          subscriptions: ['scooterLimited']
+        };
+        socketRef.current.send(JSON.stringify(data));
+      };
+
       socketRef.current.onclose = () => {
-        console.log('WebSocket Connection Closed')
-      }
-  
+        console.log('WebSocket Connection Closed');
+      };
+
       return () => {
-        console.log('Cleaning up WebSocket Connection')
-        socketRef.current.close()
-      }
-    }
-    getWebSocketScooters()
-    
-  }, [])
+        console.log('Cleaning up WebSocket Connection');
+        socketRef.current.close();
+      };
+    };
+    getWebSocketScooters();
+  }, []);
 
   const styles = StyleSheet.create({
     container: {
@@ -206,15 +204,14 @@ export default function App() {
             key={index}
             coordinate={{
               latitude: scooter.positionY,
-              longitude: scooter.positionX,
+              longitude: scooter.positionX
             }}
             image={require('../assets/scooter-icon.png')}
           >
-            {/* You can customize the marker content as needed */}
             <Callout>
               <View>
                 <Text>Scooter ID: {scooter.scooterId}</Text>
-                {/* Add more details as needed */}
+                {/* nice bike icon */}
               </View>
             </Callout>
           </Marker>

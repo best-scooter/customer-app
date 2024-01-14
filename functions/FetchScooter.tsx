@@ -33,7 +33,9 @@ export async function getScooter(
   scooterId: string
 ): Promise<GetScooterResponse> {
   try {
-    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter/${scooterId}`);
+    const response = await fetch(
+      `http://${ADDRESS}:1337/v1/scooter/${scooterId}`
+    );
     const result = await response.json();
     if (result && result.data) {
       return result.data;
@@ -125,14 +127,17 @@ export async function putScooter(
   //const token = await retrieveToken("ScooterToken")
   const scooterId2 = String(scooterId);
   try {
-    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter/${scooterId2}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Access-Token': token
-      },
-      method: 'PUT',
-      body: JSON.stringify({ available: false })
-    });
+    const response = await fetch(
+      `http://${ADDRESS}:1337/v1/scooter/${scooterId2}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Access-Token': token
+        },
+        method: 'PUT',
+        body: JSON.stringify({ available: false })
+      }
+    );
 
     if (response.status === 204) {
       // Successful "No Content" response

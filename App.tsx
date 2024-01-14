@@ -17,6 +17,9 @@ import {
   faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
 
+import Constants from 'expo-constants';
+import * as Network from 'expo-network';
+
 import FontLoader from './components/FontsLoader';
 import Home from './screens/Home';
 import Rent from './screens/Rent';
@@ -29,7 +32,7 @@ import { removeToken, retrieveToken } from './functions/SecureStore';
 const homeName = 'Home';
 const MapName = 'Map';
 const RentName = 'Rent';
-const LoginName = 'Login';
+const LoginName = 'Sign In';
 const RegisterName = 'Register';
 
 const Tab = createBottomTabNavigator();

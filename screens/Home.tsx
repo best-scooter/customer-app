@@ -9,9 +9,8 @@ import {
 import { styles } from '../components/Styles';
 
 const Home = () => {
-  // Placeholder just getting landing page setup
   const headline = 'Svenska Elsparkcyklar AB';
-  const description = 'This is a placeholder with amazing text dud.';
+  const description = 'View all the bikes on the map and rent one for yourself';
 
   const styles2 = StyleSheet.create({
     button: {
@@ -36,12 +35,10 @@ const Home = () => {
           <View style={styles.header}>
             <Text style={styles.headerText}>Welcome to the App</Text>
           </View>
-
           <View style={styles.news}>
             <Text style={styles.headline}>{headline}</Text>
             <Text style={styles.description}>{description}</Text>
           </View>
-
           <TouchableOpacity style={styles2.button}>
             <Text style={styles2.buttonText}>Explore More</Text>
           </TouchableOpacity>

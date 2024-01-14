@@ -4,8 +4,6 @@ services:
   customer-app:
     image: davee3/customer-app:latest
     ports:
-      - "8888:8888"
+      - 80:80
     stdin_open: true
     tty: true
-    env_file:
-      - path: .env

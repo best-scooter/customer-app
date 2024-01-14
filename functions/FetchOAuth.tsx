@@ -1,4 +1,5 @@
 const ADDRESS = process.env.DEV_ADDRESS;
+const TUNNEL_ADDRESS = process.env.TUNNEL_ADDRESS;
 import * as WebBrowser from 'expo-web-browser';
 import { extractCodeFromUrl } from './Helpers';
 
@@ -14,7 +15,7 @@ export async function getOAUTH(): Promise<string[]> {
   console.log(ADDRESS);
   try {
     const response = await fetch(
-      `http://${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://customer-app-escooters.ngrok.io`
+      `http://${ADDRESS}:1337/v1/customer/auth?redirectUrl=${TUNNEL_ADDRESS}`
     );
     const result = await response.json();
 

@@ -42,7 +42,10 @@ export async function getZones(customerToken: string): Promise<GetZonesReturn> {
   }
 }
 
-export async function getZoneById(customerToken: string, zoneId: any): Promise<GetZonesReturn> {
+export async function getZoneById(
+  customerToken: string,
+  zoneId: any
+): Promise<GetZonesReturn> {
   //const customerToken = retrieveToken('jwtLogin')
   try {
     const response = await fetch(`http://${ADDRESS}:1337/v1/zone/${zoneId}`, {
