@@ -1,4 +1,5 @@
 const ADDRESS = process.env.DEV_ADDRESS;
+console.log("local address:", ADDRESS)
 
 /**
  * Update customer's balance by deducting a specified amount
@@ -17,7 +18,7 @@ export async function updateCustomerBalance(
   const updatedBalance = currentBalance - amountToDeduct;
 
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/customer/${customerId}`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/${customerId}`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -37,7 +38,7 @@ export async function updateCustomerBalance(
   } catch (error) {
     console.error('Put customer error:', error);
     throw new Error('Put customer error: ' + (error as Error).message);
-  }
+}
 }
 
 type getCustomerResponse = {
@@ -59,7 +60,7 @@ export async function getCustomer(
   token: string
 ): Promise<getCustomerResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/customer/${customerId}`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/${customerId}`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -82,7 +83,8 @@ export async function postCustomerToken(
   emailBody: string,
 ): Promise<getCustomerResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/customer/token`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/token`, {
+    // const response = await fetch(`http://192.168.0.108:1337/v1/customer/token`, {
       headers: {
         'Content-Type': 'application/json',
       },

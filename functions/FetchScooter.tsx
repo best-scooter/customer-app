@@ -33,7 +33,7 @@ export async function getScooter(
   scooterId: string
 ): Promise<GetScooterResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/scooter/${scooterId}`);
+    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter/${scooterId}`);
     const result = await response.json();
     if (result && result.data) {
       return result.data;
@@ -56,7 +56,7 @@ export async function getAllScooters(
   token: string
 ): Promise<GetScooterResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/scooter`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token
@@ -89,7 +89,7 @@ export async function getScooterToken(
   const pass = String(scootId);
 
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/scooter/token`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter/token`, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -125,7 +125,7 @@ export async function putScooter(
   //const token = await retrieveToken("ScooterToken")
   const scooterId2 = String(scooterId);
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/scooter/${scooterId2}`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/scooter/${scooterId2}`, {
       headers: {
         'Content-Type': 'application/json',
         'X-Access-Token': token

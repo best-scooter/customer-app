@@ -96,7 +96,7 @@ export default function App() {
         const receivedData = JSON.parse(event.data)
 
 
-        if (receivedData['remove']) {
+        if (receivedData['remove'] === true) {
           setScooters((prevScooters) => {
             return prevScooters.filter(
               (scooter) => scooter.scooterId !== receivedData.scooterId

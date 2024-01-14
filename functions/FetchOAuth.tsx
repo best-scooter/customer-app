@@ -14,7 +14,7 @@ export async function getOAUTH(): Promise<string[]> {
   console.log(ADDRESS);
   try {
     const response = await fetch(
-      `${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://192.168.0.10:8888`
+      `http://${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://192.168.0.10:8888`
     );
     const result = await response.json();
 
@@ -56,7 +56,7 @@ export async function redirectOAuth(
 
 export async function postOAUTH(code: string, state: string): Promise<string> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/customer/auth`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/auth`, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -81,7 +81,7 @@ export async function postToken(
   email: string = 'standard.gmail.com'
 ): Promise<PostTokenResponse> {
   try {
-    const response = await fetch(`${ADDRESS}:1337/v1/customer/token`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/token`, {
       headers: {
         'Content-Type': 'application/json'
       },
