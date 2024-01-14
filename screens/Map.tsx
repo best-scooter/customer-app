@@ -31,6 +31,18 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const retrieveTokenAsync = async () => {
+      const token2 = await retrieveToken('jwtLogin');
+
+      if (!token2) {
+        console.log('no token redirecting');
+        // @ts-ignore
+        navigation.navigate('Login');
+      }
+    };
+
+    retrieveTokenAsync();
+    
     const handleGetZones = async () => {
       try {
         const token = await retrieveToken('jwtLogin');
@@ -65,11 +77,33 @@ export default function App() {
       const storedToken = await retrieveToken('jwtLogin');
 
       const token = String(storedToken).trim();
+
+      const retrieveTokenAsync = async () => {
+        const token2 = await retrieveToken('jwtLogin');
+  
+        if (!token2) {
+          console.log('no token redirecting');
+          // @ts-ignore
+          navigation.navigate('Login');
+        }
+      };
+  
+      retrieveTokenAsync();
       console.log(token)
       socketRef.current = new WebSocket('ws://192.168.0.10:8081', token)
   
       socketRef.current.onmessage = (event) => {
         const receivedData = JSON.parse(event.data)
+
+
+        if (receivedData['remove']) {
+          setScooters((prevScooters) => {
+            return prevScooters.filter(
+              (scooter) => scooter.scooterId !== receivedData.scooterId
+            );
+          });
+          return;
+        }
   
         const evalInvalidPosition =
           receivedData['positionX'] === undefined ||
@@ -85,7 +119,7 @@ export default function App() {
           const scooterIndex = prevScooters.findIndex(
             (scooter) => scooter.scooterId === receivedData.scooterId,
           )
-  
+
           if (scooterIndex !== -1) {
             return prevScooters.map((scooter, index) =>
               index === scooterIndex

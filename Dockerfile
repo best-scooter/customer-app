@@ -9,7 +9,10 @@ COPY . .
 
 # EXPO's PORT
 EXPOSE 19000
-EXPOSE 8081
+# Our porter wine
+EXPOSE 8888
+# Web port
+EXPOSE 19002
 
 #
 CMD ["npm", "start"]

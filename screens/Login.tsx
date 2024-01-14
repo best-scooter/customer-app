@@ -12,6 +12,8 @@ import {
 } from '../functions/FetchOAuth';
 
 import { postCustomerToken } from '../functions/FetchCustomer';
+import * as WebBrowser from 'expo-web-browser';
+import { Linking } from 'react-native';
 
 import { storeToken } from '../functions/SecureStore';
 //import * as Network from 'expo-network';
@@ -49,9 +51,13 @@ const Login = ({ setLoginStatus }) => {
     checkLoginStatus();
   }, []);
 
-  const handleRedirect = () => {
+  const handleRedirect = async () => {
     // @ts-ignore
-    navigation.navigate('Register'); //ts doesn't like this library
+    //navigation.navigate('Register'); //ts doesn't like this library
+    //const result = await WebBrowser.openAuthSessionAsync('192.168.0.10:3000', 'exp://192.168.0.10:8888');
+    const registrationUrl = 'http://192.168.0.10:3000/register'; // Replace with your actual registration URL
+    Linking.openURL(registrationUrl);
+    //console.log('lol wtf :', result)
   };
 
   const handleLogout = async () => {
@@ -122,6 +128,14 @@ const Login = ({ setLoginStatus }) => {
             >
               Login
             </PaperButton>
+            {/* <PaperButton
+              mode="contained"
+              onPress={handleRedirect}
+              style={styles.button}
+              labelStyle={styles.buttonText}
+            >
+              Register 
+            </PaperButton>*/}
             <Text style={{ marginVertical: 10 }}>Or</Text>
             <PaperButton
               mode="contained"
