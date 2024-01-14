@@ -14,7 +14,7 @@ export async function getOAUTH(): Promise<string[]> {
   console.log(ADDRESS);
   try {
     const response = await fetch(
-      `http://${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://192.168.0.10:8888`
+      `http://${ADDRESS}:1337/v1/customer/auth?redirectUrl=exp://customer-app-escooters.ngrok.io`
     );
     const result = await response.json();
 

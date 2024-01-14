@@ -51,14 +51,10 @@ const Login = ({ setLoginStatus }) => {
     checkLoginStatus();
   }, []);
 
-  const handleRedirect = async () => {
-    // @ts-ignore
-    //navigation.navigate('Register'); //ts doesn't like this library
-    //const result = await WebBrowser.openAuthSessionAsync('192.168.0.10:3000', 'exp://192.168.0.10:8888');
-    const registrationUrl = 'http://192.168.0.10:3000/register'; // Replace with your actual registration URL
-    Linking.openURL(registrationUrl);
-    //console.log('lol wtf :', result)
-  };
+  // const handleRedirect = async () => {
+  //   const registrationUrl = 'http://192.168.0.10:3000/register';
+  //   Linking.openURL(registrationUrl);
+  // };
 
   const handleLogout = async () => {
     await removeToken('jwtLogin');
