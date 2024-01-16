@@ -89,7 +89,7 @@ export async function postCustomerToken(
   emailBody: string
 ): Promise<getCustomerResponse> {
   try {
-    const response = await fetch(`http://10.0.2.2:1337/v1/customer/token`, {
+    const response = await fetch(`http://${ADDRESS}:1337/v1/customer/token`, {
       // const response = await fetch(`http://192.168.0.108:1337/v1/customer/token`, {
       headers: {
         'Content-Type': 'application/json'
