@@ -4,7 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "npx expo start --tunnel --port 8888",
-    "android": "expo start --android",
+    "android": "expo start --android --tunnel --port 8888",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",

@@ -46,8 +46,7 @@ export async function postParkingByScooter(
       {
         headers: {
           'Content-Type': 'application/json',
-          'X-Access-Token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWRtaW4iLCJhZG1pblVzZXJuYW1lIjoiY2hlZmVuIiwiYWRtaW5MZXZlbCI6InN1cGVyYWRtaW4iLCJpZCI6MSwiYWRtaW5JZCI6MSwiaWF0IjoxNzA0OTQ5MTM2LCJleHAiOjE3MDQ5NjM1MzZ9.CVEmaEqzl5e3DsHkB6XCUbtMsk-ErUPZHeJm3_UMY1Y'
+          'X-Access-Token': customerToken
         },
         method: 'POST',
         body: JSON.stringify({

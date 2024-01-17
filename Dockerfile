@@ -1,5 +1,4 @@
-FROM node:latest
-
+FROM node:17-alpine as builder
 
 COPY package*.json ./
 
@@ -17,5 +16,5 @@ EXPOSE 80
 # Web port
 EXPOSE 19002
 
-#
+
 CMD ["npm", "start"]
