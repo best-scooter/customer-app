@@ -61,11 +61,12 @@ const Login = ({ setLoginStatus }) => {
 
   const allInOne = async () => {
     try {
+      const email = username
       const [redirectUrl, url, state]: string[] = await getOAUTH();
       console.log(redirectUrl, url, state);
       const [code] = await redirectOAuth(redirectUrl, url, state);
       const token = await postOAUTH(code, state);
-      const jwt = await postToken(token);
+      const jwt = await postToken(token, email);
       console.log('All clear, your token is: ', jwt);
       //console.log('jwtdataoauth: ', jwt.data.token)
       storeToken('jwtLogin', jwt.data.token); //check up later

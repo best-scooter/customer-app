@@ -50,7 +50,7 @@ export async function postParkingByScooter(
         },
         method: 'POST',
         body: JSON.stringify({
-          scooterPosition: [57.69, 11.95]
+          scooterPosition: scooterPos
         })
       }
     );
