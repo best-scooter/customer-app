@@ -80,16 +80,6 @@ export default function App() {
             );
           });
           return;
-          // setScooters((prevScooters) => {
-          //   const scooterIndex = prevScooters.findIndex(
-          //     (scooter) => scooter.scooterId === receivedData.scooterId,
-          //   )
-
-          //   if (scooterIndex !== -1) {
-          //     prevScooters[scooterIndex] = undefined
-          //   }
-          // })
-          // return
         }
 
         const evalInvalidPosition =

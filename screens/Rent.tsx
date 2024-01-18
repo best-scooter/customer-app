@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Button, ImageBackground } from 'react-native';
 import { TextInput, Button as PaperButton } from 'react-native-paper';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -24,8 +24,12 @@ import {
   postParkingByScooter
 } from '../functions/FetchParking';
 
+const ADDRESS = process.env.DEV_ADDRESS;
+
 const Rent = () => {
   const navigation = useNavigation();
+  const socketRef = useRef(null);
+
 
   const [userInput, setUserInput] = useState('');
   const [hasPermission, setHasPermission] = useState(null);
@@ -101,12 +105,34 @@ const Rent = () => {
     //alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
   };
 
+
+
   const handleStartRent = async (data: string) => {
+    const storedToken = await retrieveToken('jwtLogin');
+
+    const token = String(storedToken).trim();
+    socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token);
     setScooterId(data);
+    const sendMessage = (scooterToRemove) => {
+      const intScooter = parseInt(scooterToRemove)
+
+      
+
+
+
+      const messageToSend = JSON.stringify({
+        message: 'scooterLimited',
+        scooterId: intScooter,
+        remove: true
+      })
+      console.log(messageToSend)
+      socketRef.current.send(messageToSend)
+    }
     const res = await getScooter(data);
     console.log('scooter byId: ', res);
     if (res) {
       //&& res.available
+      sendMessage(scooterId)
       const customerId = await retrieveToken('customerId');
 
       //Getting ScooterToken to authenticate put request
