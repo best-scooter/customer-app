@@ -201,7 +201,6 @@ export default function App() {
             <Callout>
               <View>
                 <Text>Scooter ID: {scooter.scooterId}</Text>
-                {/* nice bike icon */}
               </View>
             </Callout>
           </Marker>

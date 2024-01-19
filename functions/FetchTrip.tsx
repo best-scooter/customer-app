@@ -73,6 +73,14 @@ export async function postTrip(
   const tripString = tripId.toString();
   console.log('tripstring: ', tripString);
   console.log('add: ', ADDRESS);
+  console.log('pos is: ', scooterPos)
+  const intcustomerId = parseInt(customerId)
+
+  console.log(JSON.stringify({
+    customerId: intcustomerId,
+    scooterId: scooterId,
+    startPosition: [scooterPos[0], scooterPos[1]]
+  }))
   try {
     const response = await fetch(`http://${ADDRESS}:1337/v1/trip/0`, {
       headers: {
@@ -81,9 +89,9 @@ export async function postTrip(
       },
       method: 'POST',
       body: JSON.stringify({
-        customerId: 10002,
-        scooterId: 4,
-        startPosition: scooterPos
+        customerId: intcustomerId,
+        scooterId: scooterId,
+        startPosition: [scooterPos[0], scooterPos[1]]
       })
     });
     if (response.status === 403) {
@@ -92,7 +100,7 @@ export async function postTrip(
         'Access forbidden: Check your permissions or credentials.'
       );
     }
-    const result = await response.json(); // sätt customer id scooter id och mer se postemaneee
+    const result = await response.json();
     if (result && result.data) {
       return result.data;
     } else {
@@ -106,7 +114,7 @@ export async function postTrip(
 }
 
 /**
- * recheck later
+ * 
  * @param {string} tripId
  * @returns {Promise<any>}
  */
@@ -125,7 +133,6 @@ export async function putTrip(tripId: string, token: string): Promise<any> {
     });
 
     if (response.status === 204) {
-      // Successful "No Content" response
       console.log('trip updated successfully');
       return response.status;
     }

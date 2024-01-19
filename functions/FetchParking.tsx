@@ -39,6 +39,9 @@ export async function postParkingByScooter(
   console.log('in func customer token : ', customerToken);
 
   const scooterStringId = scooterId.toString();
+  console.log(JSON.stringify({
+    scooterPosition: scooterPos
+  }))
 
   try {
     const response = await fetch(
@@ -55,6 +58,7 @@ export async function postParkingByScooter(
       }
     );
     const res = await response.json();
+    console.log('response from post parking by id:' , res)
     if (res) {
       return res.data;
     } else {

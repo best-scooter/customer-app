@@ -109,17 +109,13 @@ const Rent = () => {
 
   const handleStartRent = async (data: string) => {
     const storedToken = await retrieveToken('jwtLogin');
+    console.log('data printed as : ', data)
 
     const token = String(storedToken).trim();
     socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token);
     setScooterId(data);
     const sendMessage = (scooterToRemove) => {
       const intScooter = parseInt(scooterToRemove)
-
-      
-
-
-
       const messageToSend = JSON.stringify({
         message: 'scooterLimited',
         scooterId: intScooter,
@@ -131,38 +127,25 @@ const Rent = () => {
     const res = await getScooter(data);
     console.log('scooter byId: ', res);
     if (res) {
-      //&& res.available
       sendMessage(scooterId)
       const customerId = await retrieveToken('customerId');
-
-      //Getting ScooterToken to authenticate put request
       const ScooterToken = await getScooterToken(data);
-      console.log('ScooterToken: ', ScooterToken);
-
-      console.log('pre putScooter data: ', data, ScooterToken);
       const putRes = await putScooter(data, ScooterToken.token, false);
-
-      console.log('put res wId: ', putRes);
       const afterUpdate = await getScooter(data);
-      console.log('beforeUpdate', res);
-      console.log('afterUpdate: ', afterUpdate);
-      console.log('data: ', data);
+
 
       const scooterData = await getScooter(data);
       console.log('scooterData: ', scooterData);
       const scooterPos = [scooterData.positionY, scooterData.positionX];
       console.log('scooter pos : ', scooterPos);
-      setScooterStart(scooterPos);
+      setScooterStart([scooterPos[0], scooterPos[1]]);
       console.log('scooter pos is set in state :', scooterStart);
 
       const storedToken = await retrieveToken('jwtLogin');
       console.log('Stored Token:', storedToken);
 
-      // wow...
       const token = String(storedToken).trim();
-      // start trip
-      // and calculate cost
-      // make it like a transaction so that it doesn't start if error happens further down the function chain
+
       // leave it as 0 because that auto assigns a tripId
       const tripData = await postTrip(
         token,
@@ -176,7 +159,6 @@ const Rent = () => {
       const tripId = await retrieveToken('tripId');
       console.log('trip id is : ', tripId);
       setisRenting(true);
-      // Set scooterId in storage to return later for safety reasons
     }
   };
 
@@ -208,31 +190,18 @@ const Rent = () => {
     setUseManualInput(false);
     removeToken('ScooterToken');
     const scooterData = await getScooter(scooterId);
-    //console.log('scooterData: ', scooterData);
     const scooterEndPos = [scooterData.positionY, scooterData.positionX];
-    //console.log('scooter pos end: ', scooterEndPos);
     const tripId = await retrieveToken('tripId');
-    //console.log('trip id is in return  : ', tripId);
 
-    console.log('here');
-    console.log(scooterEndPos);
 
     const finalZoneValue = await postParkingByScooter(
       token,
       scooterId,
       scooterEndPos
     );
-    console.log('final zone value with zone ids: ', finalZoneValue);
     const zoneData = await getZoneById(token, finalZoneValue.zoneIds); // Fixa zone id på något jäkla sätt
-    console.log('last zone dataaaa: ', zoneData);
     const finalZoneValueNum = zoneData.data.parkingValue;
-    console.log('final zone parking value is :', finalZoneValueNum);
-    console.log('final zone parking value is :', typeof finalZoneValueNum);
-
     const pickUpCostBasedByZones = initialZoneValue - finalZoneValueNum;
-    console.log('pick up cost by zones is : ', pickUpCostBasedByZones);
-
-    //console.log('is 0 - 0 Nan?', (0 - 0))
 
     await putTrip(tripId, token, scooterStart);
 
