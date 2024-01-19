@@ -56,7 +56,7 @@ const Login = ({ setLoginStatus }) => {
 
   const allInOne = async () => {
     try {
-      const email = username
+      const email = username;
       const [redirectUrl, url, state]: string[] = await getOAUTH();
       console.log(redirectUrl, url, state);
       const [code] = await redirectOAuth(redirectUrl, url, state);

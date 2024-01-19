@@ -30,7 +30,6 @@ const Rent = () => {
   const navigation = useNavigation();
   const socketRef = useRef(null);
 
-
   const [userInput, setUserInput] = useState('');
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -42,12 +41,12 @@ const Rent = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('Screen is focused');
+      
       const retrieveTokenAsync = async () => {
         const token = await retrieveToken('jwtLogin');
 
         if (!token) {
-          console.log('No token, redirecting to login');
+          
           // @ts-ignore
           navigation.navigate('Sign In');
         }
@@ -74,12 +73,12 @@ const Rent = () => {
   const handleUserInput = async () => {
     const token = await retrieveToken('jwtLogin');
     if (!token) {
-      console.log('no token redirecting');
+      
       // @ts-ignore
       navigation.navigate('Sign In');
     } else {
       setShowCamera(false);
-      console.log('userInput:', userInput);
+      
       setUseManualInput(false);
       handleStartRent(userInput);
     }
@@ -96,7 +95,7 @@ const Rent = () => {
     );
     const token = await retrieveToken('jwtLogin');
     if (!token) {
-      console.log('no token redirecting');
+      
       // @ts-ignore
       navigation.navigate('Sign In');
     } else {
@@ -105,44 +104,41 @@ const Rent = () => {
     //alert(`Bar code with type: ${type} and data: ${data} has been scanned!`);
   };
 
-
-
   const handleStartRent = async (data: string) => {
     const storedToken = await retrieveToken('jwtLogin');
-    console.log('data printed as : ', data)
+    
 
     const token = String(storedToken).trim();
     socketRef.current = new WebSocket(`ws://${ADDRESS}:8081`, token);
     setScooterId(data);
     const sendMessage = (scooterToRemove) => {
-      const intScooter = parseInt(scooterToRemove)
+      const intScooter = parseInt(scooterToRemove);
       const messageToSend = JSON.stringify({
         message: 'scooterLimited',
         scooterId: intScooter,
         remove: true
-      })
-      console.log(messageToSend)
-      socketRef.current.send(messageToSend)
-    }
+      });
+      
+      socketRef.current.send(messageToSend);
+    };
     const res = await getScooter(data);
-    console.log('scooter byId: ', res);
+    
     if (res) {
-      sendMessage(scooterId)
+      sendMessage(scooterId);
       const customerId = await retrieveToken('customerId');
       const ScooterToken = await getScooterToken(data);
       const putRes = await putScooter(data, ScooterToken.token, false);
       const afterUpdate = await getScooter(data);
 
-
       const scooterData = await getScooter(data);
-      console.log('scooterData: ', scooterData);
+      
       const scooterPos = [scooterData.positionY, scooterData.positionX];
-      console.log('scooter pos : ', scooterPos);
+      
       setScooterStart([scooterPos[0], scooterPos[1]]);
-      console.log('scooter pos is set in state :', scooterStart);
+      
 
       const storedToken = await retrieveToken('jwtLogin');
-      console.log('Stored Token:', storedToken);
+      
 
       const token = String(storedToken).trim();
 
@@ -154,10 +150,10 @@ const Rent = () => {
         parseInt(data),
         scooterPos
       );
-      console.log(tripData);
+      
       await storeToken('tripId', tripData.tripId.toString());
       const tripId = await retrieveToken('tripId');
-      console.log('trip id is : ', tripId);
+      
       setisRenting(true);
     }
   };
@@ -169,22 +165,22 @@ const Rent = () => {
     const allParkingsByScooter = await getParkingByScooter(token, scooterId);
 
     let initialZoneValue = 15;
-    console.log('len of park: ', allParkingsByScooter.data.length);
+    
     if (allParkingsByScooter.data && allParkingsByScooter.data.length > 0) {
       const lastParking =
         allParkingsByScooter.data[allParkingsByScooter.data.length - 1];
-      console.log('lastParking: ', lastParking);
+      
 
       const lastKnownParkingZone = lastParking.zoneId;
 
       const zoneData = await getZoneById(token, lastKnownParkingZone); // Fixa zone id på något jäkla sätt
       initialZoneValue = parseInt(zoneData.data.parkingValue);
-      console.log('Initial zone value is : ', initialZoneValue);
+      
     } else {
-      console.log('else triggered meaning data length is 0');
+      
       initialZoneValue = 15;
     }
-    console.log('out of loop init zone value :', initialZoneValue);
+    
 
     setisRenting(false); // tar väck knappen
     setUseManualInput(false);
@@ -192,7 +188,6 @@ const Rent = () => {
     const scooterData = await getScooter(scooterId);
     const scooterEndPos = [scooterData.positionY, scooterData.positionX];
     const tripId = await retrieveToken('tripId');
-
 
     const finalZoneValue = await postParkingByScooter(
       token,
@@ -206,7 +201,7 @@ const Rent = () => {
     await putTrip(tripId, token, scooterStart);
 
     const tripData = await getTrip(tripId);
-    console.log('tripdata is: ', tripData);
+    
     const { priceInitial, priceDistance, priceTime, distance } = tripData.data;
     const { timeStarted, timeEnded } = tripData.data;
 
@@ -214,7 +209,7 @@ const Rent = () => {
     const endedTime = new Date(timeEnded);
     const timeDifferenceMs = endedTime - startedTime;
     const timeDurationInHours = timeDifferenceMs / (1000 * 60 * 60);
-    console.log('time duration :', timeDurationInHours);
+    
 
     const initialPrice = priceInitial;
     const distanceCost = distance ? distance * priceDistance : 0;
@@ -224,21 +219,13 @@ const Rent = () => {
 
     const totalCostAfterZoneConsiderations = totalCost - pickUpCostBasedByZones;
 
-    console.log('pickUpCostBasedByZones', pickUpCostBasedByZones);
-
-    console.log('Total Cost:', totalCost);
-    console.log(
-      'totalCostAfterZoneConsiderations:',
-      totalCostAfterZoneConsiderations
-    );
-
     const customerId = await retrieveToken('customerId');
     const customerData = await getCustomer(customerId, token);
-    console.log('customerdata is here: ', customerData);
+    
     const customerBalance = customerData.balance;
 
-    await updateCustomerBalance(customerId, token, customerBalance, totalCost);
-    console.log('return bike ended');
+    await updateCustomerBalance(customerId, token, customerBalance, totalCostAfterZoneConsiderations);
+    
   };
 
   useEffect(() => {

@@ -73,14 +73,16 @@ export async function postTrip(
   const tripString = tripId.toString();
   console.log('tripstring: ', tripString);
   console.log('add: ', ADDRESS);
-  console.log('pos is: ', scooterPos)
-  const intcustomerId = parseInt(customerId)
+  console.log('pos is: ', scooterPos);
+  const intcustomerId = parseInt(customerId);
 
-  console.log(JSON.stringify({
-    customerId: intcustomerId,
-    scooterId: scooterId,
-    startPosition: [scooterPos[0], scooterPos[1]]
-  }))
+  console.log(
+    JSON.stringify({
+      customerId: intcustomerId,
+      scooterId: scooterId,
+      startPosition: [scooterPos[0], scooterPos[1]]
+    })
+  );
   try {
     const response = await fetch(`http://${ADDRESS}:1337/v1/trip/0`, {
       headers: {
@@ -114,7 +116,7 @@ export async function postTrip(
 }
 
 /**
- * 
+ *
  * @param {string} tripId
  * @returns {Promise<any>}
  */
